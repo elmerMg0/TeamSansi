@@ -1,6 +1,6 @@
 package org.bo.list.Item;
 
-public class Item {
+public abstract class Item {
     private String idItem;
     private String name;
     private String description;
@@ -45,7 +45,4 @@ public class Item {
         this.price = price;
     }
 
-    public void print(){
-        System.out.println("hi elmer");
-    }
 }
