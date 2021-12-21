@@ -44,4 +44,8 @@ public class Item {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public void print(){
+        System.out.println("hi elmer");
+    }
 }
