@@ -14,5 +14,8 @@ public class Menu {
     public void addItem(Item item){
         avaibleItems.add(item);
     }
+    public void addOrder(Item item){
+        orderDishes.add(Item);
+    }
 }
 
