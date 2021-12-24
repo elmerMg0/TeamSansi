@@ -5,3 +5,7 @@
 plugins {
     id 'org.bo.java-library-conventions'
 }
+
+dependencies {
+    implementation 'mysql:mysql-conector-java:8.0.26'
+}

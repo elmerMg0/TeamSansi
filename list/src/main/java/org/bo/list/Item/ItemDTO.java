@@ -1,23 +1,23 @@
 package org.bo.list.Item;
 
-public abstract class Item {
-    private String idItem;
+public abstract class ItemDTO {
+    private int idItem;
     private String name;
     private String description;
     private double price;
 
-    public Item(String idItem, String name, String description, double price){
+    public ItemDTO(int idItem, String name, String description, double price){
         this.idItem = idItem;
         this.name = name;
         this.description = description;
         this.price = price;
     }
 
-    public String getIdItem() {
+    public int getIdItem() {
         return idItem;
     }
 
-    public void setIdItem(String idItem) {
+    public void setIdItem(int idItem) {
         this.idItem = idItem;
     }
 
