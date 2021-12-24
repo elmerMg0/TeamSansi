@@ -1,10 +1,11 @@
 package org.bo.list.Item;
 
-public abstract class ItemDTO {
-    private int idItem;
-    private String name;
-    private String description;
-    private double price;
+public class ItemDTO {
+    protected int idItem;
+    protected String name;
+    protected String description;
+    protected double price;
+    protected boolean isDish;
 
     public ItemDTO(int idItem, String name, String description, double price){
         this.idItem = idItem;
@@ -45,4 +46,22 @@ public abstract class ItemDTO {
         this.price = price;
     }
 
+    public boolean isDish() {
+        return isDish;
+    }
+
+    public void setDish(boolean dish) {
+        isDish = dish;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemDTO{" +
+                "idItem=" + idItem +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", isDish=" + isDish +
+                '}';
+    }
 }

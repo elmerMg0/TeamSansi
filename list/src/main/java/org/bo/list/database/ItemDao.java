@@ -15,7 +15,4 @@ public interface ItemDao {
 
     public int delete(ItemDTO itemDTO) throws SQLException;
 
-    public ItemDTO select(int idItem) throws SQLException;
-
-
 }
