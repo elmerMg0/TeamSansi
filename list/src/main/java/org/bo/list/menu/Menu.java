@@ -1,23 +1,23 @@
 package org.bo.list.menu;
 
-import org.bo.list.Item.Item;
+import org.bo.list.Item.ItemDTO;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class Menu {
-    private Set<Item> avaibleItems;
-    private Set<Item> orderDishes;
+    private Set<ItemDTO> avaibleItems;
+    private Set<ItemDTO> orderDishes;
 
     public Menu(){
         avaibleItems = new HashSet<>();
         orderDishes = new HashSet<>();
     }
 
-    public void addItem(Item item){
+    public void addItem(ItemDTO item){
         avaibleItems.add(item);
     }
-    public void addOrder(Item item){
+    public void addOrder(ItemDTO item){
         orderDishes.add(item);
     }
 }
