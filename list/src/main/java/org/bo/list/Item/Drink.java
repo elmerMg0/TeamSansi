@@ -5,4 +5,9 @@ public class Drink extends ItemDTO {
         super(idItem, name, description, price);
         super.isDish = false;
     }
+
+    public Drink(String name, String description, double price) {
+        super(name, description, price);
+        super.isDish = false;
+    }
 }

@@ -1,5 +1,7 @@
 package org.bo.list.Item;
 
+import java.util.Objects;
+
 public class ItemDTO {
     protected int idItem;
     protected String name;
@@ -7,8 +9,15 @@ public class ItemDTO {
     protected double price;
     protected boolean isDish;
 
-    public ItemDTO(int idItem, String name, String description, double price){
+    public ItemDTO(int idItem, String name, String description, double price) {
         this.idItem = idItem;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
+    public ItemDTO(String name, String description, double price) {
+        this.idItem = 0;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -16,10 +25,6 @@ public class ItemDTO {
 
     public int getIdItem() {
         return idItem;
-    }
-
-    public void setIdItem(int idItem) {
-        this.idItem = idItem;
     }
 
     public String getName() {
@@ -50,8 +55,17 @@ public class ItemDTO {
         return isDish;
     }
 
-    public void setDish(boolean dish) {
-        isDish = dish;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemDTO itemDTO = (ItemDTO) o;
+        return Objects.equals(name, itemDTO.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     @Override

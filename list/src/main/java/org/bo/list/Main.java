@@ -5,6 +5,7 @@ import org.bo.list.Item.ItemDTO;
 import org.bo.list.database.ConnectionDatabase;
 import org.bo.list.database.ItemDao;
 import org.bo.list.database.ItemDaoJDBC;
+import org.bo.list.menu.Menu;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -12,13 +13,23 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        ItemDao item = new ItemDaoJDBC(ConnectionDatabase.getConnection());
-        ItemDTO itemDTO = new Dish(0,"CharqueKan","Papa,huevo,matambre",95.0);
+
+        Menu menu = new Menu();
+        List<ItemDTO> items = menu.select();
+        ItemDTO item = items.get(0);
+        item.setPrice(65);
+        menu.update(item);
+
+
+        /*ItemDao item = new ItemDaoJDBC(ConnectionDatabase.getConnection());
+//        item.insert(itemDTO);
         List<ItemDTO> items = item.select();
+        ItemDTO itemDTO = items.get(1);
         System.out.println(items);
-        int numFilasAfectadas = item.update(itemDTO,5);
+        itemDTO.setName("Charque kan");
+        int numFilasAfectadas = item.update(itemDTO);
         List<ItemDTO> items2 = item.select();
-        System.out.println(items2);
+        System.out.println(items2);*/
     }
 
 }
