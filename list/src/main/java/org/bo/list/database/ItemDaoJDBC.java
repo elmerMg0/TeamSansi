@@ -18,11 +18,10 @@ public class ItemDaoJDBC implements ItemDao {
     private static final String SQL_SELECT = "SELECT * FROM item";
     private static final String SQL_DELETE = "DELETE FROM item WHERE id_item = ?";
 
-    private static final String SQL_INSERT = "INSERT INTO ITEM(name,description,price,is_dish)VALUES(?,?,?,?)";
+    private static final String SQL_INSERT = "INSERT INTO item(name, description, price, is_dish) VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE item SET name = ?, description = ?, price = ?,is_dish = ? WHERE id_item = ?";
 
     public ItemDaoJDBC(Connection connection) {
-
         this.connection = connection;
     }
 
@@ -85,7 +84,7 @@ public class ItemDaoJDBC implements ItemDao {
     }
 
     @Override
-    public int update(ItemDTO itemDTO,int id_item) throws SQLException {
+    public int update(ItemDTO itemDTO) throws SQLException {
         Connection conn = null;
         PreparedStatement statement = null;
         int result = 0;
@@ -96,7 +95,7 @@ public class ItemDaoJDBC implements ItemDao {
             statement.setString(2, itemDTO.getDescription());
             statement.setDouble(3, itemDTO.getPrice());
             statement.setBoolean(4, itemDTO.isDish());
-            statement.setInt(5,id_item);
+            statement.setInt(5, itemDTO.getIdItem());
             result = statement.executeUpdate();
         } finally {
             try {
@@ -147,4 +146,5 @@ public class ItemDaoJDBC implements ItemDao {
             ex.printStackTrace(System.out);
         }
     }
+
 }
