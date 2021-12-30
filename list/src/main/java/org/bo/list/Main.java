@@ -15,6 +15,11 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
         Menu menu = new Menu();
+        List<ItemDTO> items = menu.select();
+        ItemDTO item = items.get(0);
+        item.setPrice(65);
+        menu.update(item);
+
 
         /*ItemDao item = new ItemDaoJDBC(ConnectionDatabase.getConnection());
 //        item.insert(itemDTO);
