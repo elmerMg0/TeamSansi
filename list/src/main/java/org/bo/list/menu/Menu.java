@@ -6,6 +6,7 @@ import org.bo.list.database.ItemDao;
 import org.bo.list.database.ItemDaoJDBC;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,6 +51,10 @@ public class Menu {
 
     public void addOrder(ItemDTO item) {
         orderDishes.add(item);
+    }
+
+    public List<ItemDTO> select() {
+        return new ArrayList<>(avaibleItems);
     }
 }
 
