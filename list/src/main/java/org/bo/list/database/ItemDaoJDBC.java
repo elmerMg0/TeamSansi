@@ -16,9 +16,13 @@ public class ItemDaoJDBC implements ItemDao {
     private Connection connection;
 
     private static final String SQL_SELECT = "SELECT * FROM item";
-    private static final String SQL_DELETE = "DELETE FROM item WHERE id_item = ?;";
+    private static final String SQL_DELETE = "DELETE FROM item WHERE id_item = ?";
+
+    private static final String SQL_INSERT = "INSERT INTO ITEM(name,description,price,is_dish)VALUES(?,?,?,?)";
+    private static final String SQL_UPDATE = "UPDATE item SET name = ?, description = ?, price = ?,is_dish = ? WHERE id_item = ?";
 
     public ItemDaoJDBC(Connection connection) {
+
         this.connection = connection;
     }
 
@@ -56,12 +60,55 @@ public class ItemDaoJDBC implements ItemDao {
 
     @Override
     public int insert(ItemDTO itemDTO) throws SQLException {
-        return 0;
+        Connection conn = null;
+        PreparedStatement statement = null;
+        int result = 0;
+        try {
+            conn = this.connection != null ? this.connection : ConnectionDatabase.getConnection();
+            statement = conn.prepareStatement(SQL_INSERT);
+            statement.setString(1, itemDTO.getName());
+            statement.setString(2, itemDTO.getDescription());
+            statement.setDouble(3, itemDTO.getPrice());
+            statement.setBoolean(4, itemDTO.isDish());
+            result = statement.executeUpdate();
+        } finally {
+            try {
+                ConnectionDatabase.close(statement);
+                if (this.connection == null) {
+                    ConnectionDatabase.close(conn);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return result;
     }
 
     @Override
-    public int update(ItemDTO itemDTO) throws SQLException {
-        return 0;
+    public int update(ItemDTO itemDTO,int id_item) throws SQLException {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        int result = 0;
+        try {
+            conn = this.connection != null ? this.connection : ConnectionDatabase.getConnection();
+            statement = conn.prepareCall(SQL_UPDATE);
+            statement.setString(1, itemDTO.getName());
+            statement.setString(2, itemDTO.getDescription());
+            statement.setDouble(3, itemDTO.getPrice());
+            statement.setBoolean(4, itemDTO.isDish());
+            statement.setInt(5,id_item);
+            result = statement.executeUpdate();
+        } finally {
+            try {
+                ConnectionDatabase.close(statement);
+                if (this.connection == null) {
+                    ConnectionDatabase.close(conn);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return result;
     }
 
     @Override
