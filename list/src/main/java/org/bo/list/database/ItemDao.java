@@ -11,7 +11,7 @@ public interface ItemDao {
 
     public int insert(ItemDTO itemDTO) throws SQLException;
 
-    public int update(ItemDTO itemDTO) throws SQLException;
+    public int update(ItemDTO itemDTO,int id_item) throws SQLException;
 
     public int delete(ItemDTO itemDTO) throws SQLException;
 

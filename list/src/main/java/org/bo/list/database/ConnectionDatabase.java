@@ -6,7 +6,7 @@ public class ConnectionDatabase {
 
     private static final String jdbc_url = "jdbc:mysql://localhost:3306/crud?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     private static final String jdbc_user = "root";
-    private static final String jdbc_password = "tupassword";
+    private static final String jdbc_password = "sa123456";
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(jdbc_url, jdbc_user, jdbc_password);
