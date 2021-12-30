@@ -13,26 +13,26 @@ import java.util.Set;
 
 public class Menu {
 
-    private ItemDao itemDao;
+    private ItemDao connection;
     private Set<ItemDTO> avaibleItems;
     private Set<ItemDTO> orderDishes;
 
     public Menu() throws SQLException {
-        this.itemDao = new ItemDaoJDBC(ConnectionDatabase.getConnection());
+        this.connection = new ItemDaoJDBC(ConnectionDatabase.getConnection());
         this.avaibleItems = new HashSet<>();
         this.orderDishes = new HashSet<>();
         updateData();
     }
 
     private void updateData() throws SQLException {
-        List<ItemDTO> items = itemDao.select();
+        List<ItemDTO> items = connection.select();
         avaibleItems.addAll(items);
         System.out.println(avaibleItems.size());
     }
 
     public void addItem(ItemDTO item) throws SQLException {
         if (avaibleItems.add(item)) {
-            itemDao.insert(item);
+            connection.insert(item);
         }
     }
 
@@ -41,7 +41,7 @@ public class Menu {
             if (item.getIdItem() == itemDTO.getIdItem()) {
                 item = itemDTO;
                 try {
-                    itemDao.update(itemDTO);
+                    connection.update(itemDTO);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -55,6 +55,11 @@ public class Menu {
 
     public List<ItemDTO> select() {
         return new ArrayList<>(avaibleItems);
+    }
+
+    public void delete(ItemDTO item) throws SQLException {
+        connection.delete(item);
+        avaibleItems.remove(item);
     }
 }
 
