@@ -3,19 +3,24 @@
  */
 package org.bo.app;
 
-import org.bo.list.LinkedList;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-import static org.bo.utilities.StringUtils.join;
-import static org.bo.utilities.StringUtils.split;
-import static org.bo.app.MessageUtils.getMessage;
+import org.bo.list.menu.Menu;
 
-import org.apache.commons.text.WordUtils;
-
-public class App {
+public class App extends Application {
     public static void main(String[] args) {
-        LinkedList tokens;
-        tokens = split(getMessage());
-        String result = join(tokens);
-        System.out.println(WordUtils.capitalize(result));
+        launch();
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Menu menu = new Menu();
+        VBox root = new VBox();
+        Scene scene = new Scene(root, 400, 400);
+        stage.setScene(scene);
+        stage.show();
     }
 }
