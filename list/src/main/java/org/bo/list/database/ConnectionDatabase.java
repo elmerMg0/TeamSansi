@@ -4,12 +4,13 @@ import java.sql.*;
 
 public class ConnectionDatabase {
 
-    private static final String jdbc_url = "jdbc:mysql://localhost:3306/crud?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+    private static final String jdbc_url = "jdbc:sqlite:list/database.db";
     private static final String jdbc_user = "root";
-    private static final String jdbc_password = "sa123456";
+    private static final String jdbc_password = "tupassword";
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(jdbc_url, jdbc_user, jdbc_password);
+        System.out.println("Database connected");
+        return DriverManager.getConnection(jdbc_url);
     }
 
     public static void close(ResultSet resultSet) throws SQLException {
@@ -22,6 +23,10 @@ public class ConnectionDatabase {
 
     public static void close(Connection conn) throws SQLException {
         conn.close();
+    }
+
+    public static void close(Statement statement) throws SQLException {
+        statement.close();
     }
 
 }

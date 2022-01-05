@@ -4,10 +4,7 @@ import org.bo.list.Item.Dish;
 import org.bo.list.Item.Drink;
 import org.bo.list.Item.ItemDTO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +12,7 @@ public class ItemDaoJDBC implements ItemDao {
 
     private Connection connection;
 
-    private static final String SQL_SELECT = "SELECT * FROM item";
+    private static final String SQL_SELECT = "SELECT * FROM item;";
     private static final String SQL_DELETE = "DELETE FROM item WHERE id_item = ?";
 
     private static final String SQL_INSERT = "INSERT INTO item(name, description, price, is_dish) VALUES (?, ?, ?, ?)";
@@ -28,15 +25,16 @@ public class ItemDaoJDBC implements ItemDao {
     @Override
     public List<ItemDTO> select() throws SQLException {
         Connection conn = null;
-        PreparedStatement statement = null;
+        Statement statement = null;
         ResultSet resultSet = null;
         List<ItemDTO> items = new LinkedList<>();
 
         try {
             conn = this.connection != null ? this.connection : ConnectionDatabase.getConnection();
-            statement = conn.prepareStatement(SQL_SELECT);
-            resultSet = statement.executeQuery();
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(SQL_SELECT);
             while (resultSet.next()) {
+                System.out.println("hola");
                 int idItem = resultSet.getInt("id_item");
                 String name = resultSet.getString("name");
                 String description = resultSet.getString("description");
@@ -52,7 +50,14 @@ public class ItemDaoJDBC implements ItemDao {
                 items.add(itemDTO);
             }
         } finally {
-            closeAll(conn, resultSet, statement);
+            try {
+                ConnectionDatabase.close(statement);
+                if (this.connection == null) {
+                    ConnectionDatabase.close(conn);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
         }
         return items;
     }
@@ -137,8 +142,12 @@ public class ItemDaoJDBC implements ItemDao {
 
     private void closeAll(Connection conn, ResultSet resultSet, PreparedStatement statement) {
         try {
-            ConnectionDatabase.close(resultSet);
-            ConnectionDatabase.close(statement);
+            if (resultSet != null) {
+                ConnectionDatabase.close(resultSet);
+            }
+            if (statement != null) {
+                ConnectionDatabase.close(statement);
+            }
             if (this.connection == null) {
                 ConnectionDatabase.close(conn);
             }
