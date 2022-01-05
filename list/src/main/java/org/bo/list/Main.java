@@ -15,6 +15,8 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
         ItemDao itemDao = new ItemDaoJDBC(ConnectionDatabase.getConnection());
+        ItemDTO pique = new Dish("Planchita","Carne, platano, huevo",95.0);
+        itemDao.insert(pique);
         System.out.println(itemDao.select());
     }
 

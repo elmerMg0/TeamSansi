@@ -4,12 +4,14 @@ import java.sql.*;
 
 public class ConnectionDatabase {
 
-    private static final String jdbc_url = "jdbc:sqlite:list/database.db";
+    private static final String jdbc_url = "jdbc:sqlite:list/crud.db";
     private static final String jdbc_user = "root";
     private static final String jdbc_password = "tupassword";
 
     public static Connection getConnection() throws SQLException {
         System.out.println("Database connected");
+        System.out.println(DriverManager.getConnection(jdbc_url));
+
         return DriverManager.getConnection(jdbc_url);
     }
 
