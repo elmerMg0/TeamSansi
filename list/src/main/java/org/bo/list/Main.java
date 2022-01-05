@@ -14,22 +14,8 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
-        Menu menu = new Menu();
-        List<ItemDTO> items = menu.select();
-        ItemDTO item = items.get(0);
-        item.setPrice(65);
-        menu.update(item);
-
-
-        /*ItemDao item = new ItemDaoJDBC(ConnectionDatabase.getConnection());
-//        item.insert(itemDTO);
-        List<ItemDTO> items = item.select();
-        ItemDTO itemDTO = items.get(1);
-        System.out.println(items);
-        itemDTO.setName("Charque kan");
-        int numFilasAfectadas = item.update(itemDTO);
-        List<ItemDTO> items2 = item.select();
-        System.out.println(items2);*/
+        ItemDao itemDao = new ItemDaoJDBC(ConnectionDatabase.getConnection());
+        System.out.println(itemDao.select());
     }
 
 }
