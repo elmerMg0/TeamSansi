@@ -13,6 +13,7 @@ public class ItemDaoJDBC implements ItemDao {
     private Connection connection;
 
     private static final String SQL_SELECT = "SELECT * FROM item;";
+    private static final String SQL_SELECT_PARAMETER = "SELECT * FROM item where is_dish = ?;";
     private static final String SQL_DELETE = "DELETE FROM item WHERE id_item = ?";
 
     private static final String SQL_INSERT = "INSERT INTO item(name, description, price, is_dish) VALUES (?, ?, ?, ?)";
@@ -33,6 +34,46 @@ public class ItemDaoJDBC implements ItemDao {
             conn = this.connection != null ? this.connection : ConnectionDatabase.getConnection();
             statement = conn.createStatement();
             resultSet = statement.executeQuery(SQL_SELECT);
+            while (resultSet.next()) {
+                int idItem = resultSet.getInt("id_item");
+                String name = resultSet.getString("name");
+                String description = resultSet.getString("description");
+                double price = resultSet.getDouble("price");
+                boolean isDish = resultSet.getBoolean("is_dish");
+
+                ItemDTO itemDTO;
+                if (isDish) {
+                    itemDTO = new Dish(idItem, name, description, price);
+                } else {
+                    itemDTO = new Drink(idItem, name, description, price);
+                }
+                items.add(itemDTO);
+            }
+        } finally {
+            try {
+                ConnectionDatabase.close(statement);
+                if (this.connection == null) {
+                    ConnectionDatabase.close(conn);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return items;
+    }
+
+    @Override
+    public List<ItemDTO> select(int argumentIsDish) throws SQLException {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<ItemDTO> items = new LinkedList<>();
+
+        try {
+            conn = this.connection != null ? this.connection : ConnectionDatabase.getConnection();
+            statement = conn.prepareStatement(SQL_SELECT_PARAMETER);
+            statement.setInt(1, argumentIsDish);
+            resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 System.out.println("hola");
                 int idItem = resultSet.getInt("id_item");
