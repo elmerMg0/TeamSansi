@@ -5,6 +5,8 @@ package org.bo.app;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -19,7 +21,17 @@ public class App extends Application {
     public void start(Stage stage) throws Exception {
         Menu menu = new Menu();
         VBox root = new VBox();
-        Scene scene = new Scene(root, 400, 400);
+        HBox frame = new HBox();
+
+        VBox orderDetail = new OrderDetail();
+        GridPane menuView = new MenuView();
+        frame.getChildren().addAll(orderDetail, menuView);
+
+        HBox buttons = new Botones();
+
+        root.getChildren().addAll(frame, buttons);
+        Scene scene = new Scene(root, 1120, 500);
+        stage.setTitle("Punto de Venta");
         stage.setScene(scene);
         stage.show();
     }

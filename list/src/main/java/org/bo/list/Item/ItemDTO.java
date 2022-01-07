@@ -8,6 +8,8 @@ public class ItemDTO {
     protected String description;
     protected double price;
     protected boolean isDish;
+    protected int quantity;
+    protected String pathImage;
 
     public ItemDTO(int idItem, String name, String description, double price) {
         this.idItem = idItem;

@@ -9,6 +9,8 @@ public interface ItemDao {
 
     public List<ItemDTO> select() throws SQLException;
 
+    public List<ItemDTO> select(int isDish) throws SQLException;
+
     public int insert(ItemDTO itemDTO) throws SQLException;
 
     public int update(ItemDTO itemDTO) throws SQLException;

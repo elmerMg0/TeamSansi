@@ -8,7 +8,7 @@ import javafx.scene.text.Font;
 public class Botones extends HBox {
     public Botones(){
         Button imprimir = new Button("IMPRIMIR");
-        Button aniadir = new Button("ANIADIR");
+        Button aniadir = new Button("AÑADIR");
         Button editar = new Button("EDITAR");
 
         imprimir.setFont(new Font("Arial",20));

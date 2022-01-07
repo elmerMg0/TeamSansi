@@ -20,10 +20,13 @@ public class OrderDetail extends VBox {
         this.tableOrders = new TableView();
         TableColumn<ItemDTO, String> colName = new TableColumn<>("Nombre");
         TableColumn<ItemDTO, Double> colPrice = new TableColumn<>("Precio");
-        tableOrders.getColumns().addAll(colName, colPrice);
+        TableColumn<ItemDTO, Integer> colQuantity = new TableColumn<>("Cantidad");
+        tableOrders.getColumns().addAll(colName, colPrice, colQuantity);
 
         this.setSpacing(10);
         this.setAlignment(Pos.CENTER);
+        this.setMinWidth(250);
+        this.setPadding(new Insets(10, 0, 10, 10));
         VBox.setMargin(title, new Insets(10, 10, 10, 10));
         this.getChildren().addAll(title, tableOrders);
     }
