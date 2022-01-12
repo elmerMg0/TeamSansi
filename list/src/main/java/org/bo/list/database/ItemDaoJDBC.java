@@ -16,8 +16,8 @@ public class ItemDaoJDBC implements ItemDao {
     private static final String SQL_SELECT_PARAMETER = "SELECT * FROM item where is_dish = ?;";
     private static final String SQL_DELETE = "DELETE FROM item WHERE id_item = ?";
 
-    private static final String SQL_INSERT = "INSERT INTO item(name, description, price, is_dish) VALUES (?, ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE item SET name = ?, description = ?, price = ?,is_dish = ? WHERE id_item = ?";
+    private static final String SQL_INSERT = "INSERT INTO item(name, description, price, is_dish, path) VALUES (?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE item SET name = ?, description = ?, price = ?, is_dish = ?, path = ? WHERE id_item = ?";
 
     public ItemDaoJDBC(Connection connection) {
         this.connection = connection;
@@ -40,12 +40,13 @@ public class ItemDaoJDBC implements ItemDao {
                 String description = resultSet.getString("description");
                 double price = resultSet.getDouble("price");
                 boolean isDish = resultSet.getBoolean("is_dish");
+                String pathImage = resultSet.getString("path");
 
                 ItemDTO itemDTO;
                 if (isDish) {
-                    itemDTO = new Dish(idItem, name, description, price);
+                    itemDTO = new Dish(idItem, name, description, price, pathImage);
                 } else {
-                    itemDTO = new Drink(idItem, name, description, price);
+                    itemDTO = new Drink(idItem, name, description, price, pathImage);
                 }
                 items.add(itemDTO);
             }
@@ -81,12 +82,13 @@ public class ItemDaoJDBC implements ItemDao {
                 String description = resultSet.getString("description");
                 double price = resultSet.getDouble("price");
                 boolean isDish = resultSet.getBoolean("is_dish");
+                String pathImage = resultSet.getString("path");
 
                 ItemDTO itemDTO;
                 if (isDish) {
-                    itemDTO = new Dish(idItem, name, description, price);
+                    itemDTO = new Dish(idItem, name, description, price, pathImage);
                 } else {
-                    itemDTO = new Drink(idItem, name, description, price);
+                    itemDTO = new Drink(idItem, name, description, price, pathImage);
                 }
                 items.add(itemDTO);
             }
@@ -115,6 +117,7 @@ public class ItemDaoJDBC implements ItemDao {
             statement.setString(2, itemDTO.getDescription());
             statement.setDouble(3, itemDTO.getPrice());
             statement.setBoolean(4, itemDTO.isDish());
+            statement.setString(5, itemDTO.getPathImage());
             result = statement.executeUpdate();
         } finally {
             try {
@@ -141,7 +144,8 @@ public class ItemDaoJDBC implements ItemDao {
             statement.setString(2, itemDTO.getDescription());
             statement.setDouble(3, itemDTO.getPrice());
             statement.setBoolean(4, itemDTO.isDish());
-            statement.setInt(5, itemDTO.getIdItem());
+            statement.setString(5, itemDTO.getPathImage());
+            statement.setInt(6, itemDTO.getIdItem());
             result = statement.executeUpdate();
         } finally {
             try {
@@ -179,22 +183,6 @@ public class ItemDaoJDBC implements ItemDao {
         }
 
         return result;
-    }
-
-    private void closeAll(Connection conn, ResultSet resultSet, PreparedStatement statement) {
-        try {
-            if (resultSet != null) {
-                ConnectionDatabase.close(resultSet);
-            }
-            if (statement != null) {
-                ConnectionDatabase.close(statement);
-            }
-            if (this.connection == null) {
-                ConnectionDatabase.close(conn);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-        }
     }
 
 }

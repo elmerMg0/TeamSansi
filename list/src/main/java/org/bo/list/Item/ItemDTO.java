@@ -11,18 +11,22 @@ public class ItemDTO {
     protected int quantity;
     protected String pathImage;
 
-    public ItemDTO(int idItem, String name, String description, double price) {
-        this.idItem = idItem;
-        this.name = name;
-        this.description = description;
-        this.price = price;
+    public ItemDTO() {
+        this.quantity = 0;
     }
 
-    public ItemDTO(String name, String description, double price) {
+    public ItemDTO(int idItem, String name, String description, double price, String pathImage) {
+        this(name, description, price, pathImage);
+        this.idItem = idItem;
+    }
+
+    public ItemDTO(String name, String description, double price, String pathImage) {
+        this();
         this.idItem = 0;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.pathImage = pathImage;
     }
 
     public int getIdItem() {
@@ -55,6 +59,26 @@ public class ItemDTO {
 
     public boolean isDish() {
         return isDish;
+    }
+
+    public void setDish(boolean dish) {
+        isDish = dish;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getPathImage() {
+        return pathImage;
+    }
+
+    public void setPathImage(String pathImage) {
+        this.pathImage = pathImage;
     }
 
     @Override

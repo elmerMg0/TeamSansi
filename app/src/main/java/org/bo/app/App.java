@@ -24,7 +24,7 @@ public class App extends Application {
         HBox frame = new HBox();
 
         VBox orderDetail = new OrderDetail();
-        GridPane menuView = new MenuView();
+        GridPane menuView = new MenuView(menu);
         frame.getChildren().addAll(orderDetail, menuView);
 
         HBox buttons = new Botones();
