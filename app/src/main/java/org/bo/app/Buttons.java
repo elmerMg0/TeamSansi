@@ -42,9 +42,9 @@ public class Buttons extends HBox {
     private void createWindowAdded() {
         Stage stage = new Stage();
         VBox viewAdd = new ViewAdd();
-        Scene scene = new Scene(viewAdd, 400, 300);
-        stage.setX(600);
-        stage.setY(250);
+        Scene scene = new Scene(viewAdd, 400, 400);
+        stage.setX(800);
+        stage.setY(220);
 
         stage.setScene(scene);
         stage.setTitle("Añadir nuevo item");
