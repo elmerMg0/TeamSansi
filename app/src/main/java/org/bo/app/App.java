@@ -5,6 +5,7 @@ package org.bo.app;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -25,7 +26,10 @@ public class App extends Application {
 
         VBox orderDetail = new OrderDetail();
         GridPane menuView = new MenuView(menu);
-        frame.getChildren().addAll(orderDetail, menuView);
+        ScrollPane scrollPane = new ScrollPane(menuView);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        frame.getChildren().addAll(orderDetail, scrollPane);
 
         HBox buttons = new Buttons();
 
