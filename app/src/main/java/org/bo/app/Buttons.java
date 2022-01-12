@@ -6,10 +6,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
 public class Buttons extends HBox {
+    private Button btnPrint;
+    private Button btnAdd;
+    private Button btnEdit;
     public Buttons(){
-        Button btnPrint = new Button("IMPRIMIR");
-        Button btnAdd = new Button("AÑADIR");
-        Button btnEdit = new Button("EDITAR");
+        btnPrint = new Button("IMPRIMIR");
+        btnAdd = new Button("AÑADIR");
+         btnEdit = new Button("EDITAR");
 
         btnPrint.setFont(new Font("Arial",20));
         btnPrint.setStyle("-fx-text-fill: White; -fx-background-color: Green");
@@ -18,7 +21,7 @@ public class Buttons extends HBox {
         btnEdit.setStyle("-fx-background-color: Red ; -fx-text-fill:White");
         btnAdd.setFont(new Font("Arial",20));
 
-        setSpacing(290);
+        this.setSpacing(290);
         setMargin(btnPrint,new Insets(30));
         setMargin(btnAdd,new Insets(30));
         setMargin(btnEdit,new Insets(30));
