@@ -27,7 +27,7 @@ public class App extends Application {
         GridPane menuView = new MenuView(menu);
         frame.getChildren().addAll(orderDetail, menuView);
 
-        HBox buttons = new Botones();
+        HBox buttons = new Buttons();
 
         root.getChildren().addAll(frame, buttons);
         Scene scene = new Scene(root, 1120, 500);
