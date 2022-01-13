@@ -7,6 +7,8 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -28,13 +30,15 @@ public class ViewAdd extends VBox {
     private final static String PATH = "src/main/java/org/bo/app/img/";
 
     private Stage stage;
-    private Label lblName, lblPrice, lblDescription, lblChooseItem, lblAddPhoto;
+    private Label lblName, lblPrice, lblDescription, lblChooseItem;
     private TextField textName, textPrice;
     private TextArea textDescription;
     private Button btnSearchPath, btnCancel, btnAccept;
     private ComboBox<String> cbx;
     private GridPane buttons;
     private String pathImage;
+    private HBox searchPathChooseItemHBox, searchPathHBox, chooseItemHBox;
+    private ImageView imageView;
 
     private Menu menu;
     private GridPane menuView;
@@ -46,10 +50,16 @@ public class ViewAdd extends VBox {
         this.stage = stage;
         this.pathImage = "";
 
+        String path = new File("src/main/java/org/bo/app/img/confirmation.jpeg").toURI().toString();
+        Image image = new Image(path);
+        imageView = new ImageView(image);
+        imageView.setVisible(false);
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
+
         lblName = new Label("Nombre");
         lblPrice = new Label("Precio");
         lblDescription = new Label("Descripcion");
-        lblAddPhoto = new Label("Agregar foto");
         lblChooseItem = new Label("Elegit item");
 
         btnSearchPath = new Button("Buscar Foto");
@@ -83,13 +93,15 @@ public class ViewAdd extends VBox {
         ObservableList<String> items = FXCollections.observableArrayList();
         items.addAll("Bebida", "Comida");
         cbx = new ComboBox<>(items);
+
+        searchPathChooseItemHBox = generateHBox();
+
         buttons = new GridPane();
         insertElements(buttons);
 
-
-        this.getChildren().addAll(lblName, textName, lblPrice, textPrice, lblDescription, textDescription, buttons);
+        this.getChildren().addAll(lblName, textName, lblPrice, textPrice, lblDescription, textDescription, searchPathChooseItemHBox, buttons);
         this.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(10, 10, 10, 10));
+        this.setPadding(new Insets(10, 5, 10, 5));
         VBox.setMargin(textDescription, new Insets(0, 10, 10, 10));
         VBox.setMargin(textName, new Insets(0, 10, 10, 10));
         VBox.setMargin(textPrice, new Insets(0, 10, 10, 10));
@@ -98,13 +110,27 @@ public class ViewAdd extends VBox {
 
     }
 
+    private HBox generateHBox() {
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(10);
+        HBox.setMargin(hBox, new Insets(5, 0, 5, 0));
+
+        searchPathHBox = new HBox();
+        searchPathHBox.setAlignment(Pos.CENTER);
+        searchPathHBox.getChildren().addAll(btnSearchPath, imageView);
+
+        chooseItemHBox = new HBox();
+        chooseItemHBox.setSpacing(5);
+        chooseItemHBox.setAlignment(Pos.CENTER);
+        chooseItemHBox.getChildren().addAll(lblChooseItem, cbx);
+        hBox.getChildren().addAll(searchPathHBox, chooseItemHBox);
+        return hBox;
+    }
+
     private void insertElements(GridPane grilla) {
-        grilla.add(lblAddPhoto, 0, 0);
-        grilla.add(lblChooseItem, 1, 0);
-        grilla.add(btnSearchPath, 0, 1);
-        grilla.add(cbx, 1, 1);
-        grilla.add(btnCancel, 0, 2);
-        grilla.add(btnAccept, 1, 2);
+        grilla.add(btnCancel, 0, 0);
+        grilla.add(btnAccept, 1, 0);
         grilla.setAlignment(Pos.CENTER);
         grilla.setPadding(new Insets(10, 10, 10, 10));
         grilla.setHgap(40);
@@ -118,11 +144,21 @@ public class ViewAdd extends VBox {
                 new FileChooser.ExtensionFilter("Images", "*.jpg", "*.png", "*.jpeg")
         );
         File pathImg = fileChooser.showOpenDialog(stage);
-        pathImage = pathImg.toPath().toString();
+        if (pathImg != null) {
+            pathImage = pathImg.toPath().toString();
+            if (pathImage.contains("jpg") || pathImage.contains("png") || pathImage.contains("jpeg")) {
+                imageView.setVisible(true);
+            }
+        }
         System.out.println(pathImage);
     }
 
     private void insertDates() throws Exception {
+        if (textName.getText().length() == 0 || textPrice.getText().length() == 0
+                || textDescription.getText().length() == 0 || cbx.getValue() == null) {
+            generateAlert("Advertencia!!!", "Debe llenar los campos");
+            return;
+        }
         String name = textName.getText();
         Double price = Double.parseDouble(textPrice.getText());
         String description = textDescription.getText();
@@ -131,20 +167,35 @@ public class ViewAdd extends VBox {
 
         String newPath = generateNewPath();
 
-
-        ItemDTO itemDTO = isDish ? new Dish(name, description, price, newPath) : new Drink(name, description, price, newPath);
-        menu.addItem(itemDTO);
-        ((MenuView) menuView).refresh();
-        stage.close();
+        if (newPath.length() == 0) {
+            generateAlert("Advertencia!!!", "Debe agregar una imagen");
+        } else {
+            ItemDTO itemDTO = isDish ? new Dish(name, description, price, newPath) : new Drink(name, description, price, newPath);
+            menu.addItem(itemDTO);
+            ((MenuView) menuView).refresh();
+            stage.close();
+        }
     }
 
     private String generateNewPath() throws Exception {
-        byte[] bytes = loadImage64(pathImage);
-        String[] pathImages = pathImage.split("/");
-        String newPath = PATH + pathImages[pathImages.length - 1];
-        File newImage = new File(newPath);
-        FileUtils.writeByteArrayToFile(newImage, bytes);
-        return newPath;
+        if (!pathImage.equals("")) {
+            byte[] bytes = loadImage64(pathImage);
+            String[] pathImages = pathImage.split("/");
+            String newPath = PATH + pathImages[pathImages.length - 1];
+            File newImage = new File(newPath);
+            FileUtils.writeByteArrayToFile(newImage, bytes);
+            return newPath;
+        } else {
+//            generateAlert("Advertencia!!!", "Debe seleccionar una imagen");
+            return "";
+        }
+    }
+
+    private void generateAlert(String title, String text) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setContentText(text);
+        alert.showAndWait();
     }
 
     private byte[] loadImage64(String url) throws Exception {
