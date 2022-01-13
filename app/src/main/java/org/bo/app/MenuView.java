@@ -3,6 +3,7 @@ package org.bo.app;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import org.bo.list.Item.ItemDTO;
 import org.bo.list.menu.Menu;
 
@@ -12,8 +13,10 @@ public class MenuView extends GridPane {
 
     private Menu menu;
     private List<ItemDTO> dishes;
+    private VBox orderDetail;
 
-    public MenuView(Menu menu) {
+    public MenuView(Menu menu, VBox orderDetail) {
+        this.orderDetail = orderDetail;
         this.menu = menu;
         dishes = menu.select();
 
@@ -31,7 +34,7 @@ public class MenuView extends GridPane {
         int column = 0;
         int row = 0;
         for (ItemDTO dish : dishes) {
-            this.add(new DishImage(dish.getName(), dish.getPathImage()), column, row);
+            this.add(new DishImage(dish,orderDetail), column, row);
             column++;
             if (column % 3 == 0) {
                 row++;

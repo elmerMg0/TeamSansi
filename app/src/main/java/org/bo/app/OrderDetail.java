@@ -36,4 +36,8 @@ public class OrderDetail extends VBox {
         VBox.setMargin(title, new Insets(10, 10, 10, 10));
         this.getChildren().addAll(title, tableOrders);
     }
+
+    public TableView<ItemDTO> getTableOrders() {
+        return tableOrders;
+    }
 }

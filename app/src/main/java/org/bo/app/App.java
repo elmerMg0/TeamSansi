@@ -25,7 +25,7 @@ public class App extends Application {
         HBox frame = new HBox();
 
         VBox orderDetail = new OrderDetail();
-        GridPane menuView = new MenuView(menu);
+        GridPane menuView = new MenuView(menu,orderDetail);
         ScrollPane scrollPane = new ScrollPane(menuView);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
