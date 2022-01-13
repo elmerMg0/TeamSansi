@@ -31,7 +31,7 @@ public class App extends Application {
 
         frame.getChildren().addAll(orderDetail, scrollPane);
 
-        HBox buttons = new Buttons();
+        HBox buttons = new Buttons(menu, menuView);
 
         root.getChildren().addAll(frame, buttons);
         Scene scene = new Scene(root, 1120, 500);

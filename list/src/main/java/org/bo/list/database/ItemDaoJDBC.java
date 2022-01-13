@@ -76,7 +76,6 @@ public class ItemDaoJDBC implements ItemDao {
             statement.setInt(1, argumentIsDish);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                System.out.println("hola");
                 int idItem = resultSet.getInt("id_item");
                 String name = resultSet.getString("name");
                 String description = resultSet.getString("description");
