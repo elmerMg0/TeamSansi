@@ -4,19 +4,24 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.bo.list.menu.Menu;
 
 import java.awt.event.MouseEvent;
 
 public class Buttons extends HBox {
-    private Button btnPrint;
-    private Button btnAdd;
-    private Button btnEdit;
+    private Button btnPrint, btnAdd, btnEdit;
+    private Menu menu;
+    private GridPane menuView;
 
-    public Buttons() {
+    public Buttons(Menu menu, GridPane menuView) {
+        this.menu = menu;
+        this.menuView = menuView;
+
         btnPrint = new Button("IMPRIMIR");
         btnAdd = new Button("AÑADIR");
         btnEdit = new Button("EDITAR");
@@ -41,10 +46,10 @@ public class Buttons extends HBox {
 
     private void createWindowAdded() {
         Stage stage = new Stage();
-        VBox viewAdd = new ViewAdd();
-        Scene scene = new Scene(viewAdd, 400, 300);
-        stage.setX(600);
-        stage.setY(250);
+        VBox viewAdd = new ViewAdd(stage, menu, menuView);
+        Scene scene = new Scene(viewAdd, 400, 400);
+        stage.setX(800);
+        stage.setY(220);
 
         stage.setScene(scene);
         stage.setTitle("Añadir nuevo item");

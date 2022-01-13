@@ -27,7 +27,6 @@ public class Menu {
     private void updateData() throws SQLException {
         List<ItemDTO> items = connection.select();
         avaibleItems.addAll(items);
-        System.out.println(avaibleItems.size());
     }
 
     public void addItem(ItemDTO item) throws SQLException {
