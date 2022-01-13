@@ -1,5 +1,6 @@
 package org.bo.app;
 
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +13,7 @@ public class DishImage extends VBox {
 
     private String dishName;
     private String pathImage;
+    private Boolean isInOrdenDetail;
 
     public DishImage(String dishName, String pathImage) {
         this.dishName = dishName;
@@ -24,7 +26,14 @@ public class DishImage extends VBox {
 
         imageView.setFitHeight(160);
         imageView.setFitWidth(280);
+        imageView.setCursor(Cursor.HAND);
         this.getChildren().addAll(name, imageView);
+        this.setOnMouseClicked(event -> clickWindow());
+    }
+
+    private void clickWindow() {
+        System.out.println("Click");
+        isInOrdenDetail = !isInOrdenDetail;
     }
 
 }
