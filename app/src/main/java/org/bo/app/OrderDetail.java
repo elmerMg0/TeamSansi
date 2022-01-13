@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import org.bo.list.Item.ItemDTO;
 
@@ -21,6 +22,11 @@ public class OrderDetail extends VBox {
         TableColumn<ItemDTO, String> colName = new TableColumn<>("Nombre");
         TableColumn<ItemDTO, Double> colPrice = new TableColumn<>("Precio");
         TableColumn<ItemDTO, Integer> colQuantity = new TableColumn<>("Cantidad");
+
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
         tableOrders.getColumns().addAll(colName, colPrice, colQuantity);
 
         this.setSpacing(10);
