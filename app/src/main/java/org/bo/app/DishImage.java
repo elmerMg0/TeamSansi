@@ -24,7 +24,7 @@ public class DishImage extends VBox {
         Image image = new Image(path);
         ImageView imageView = new ImageView(image);
 
-        imageView.setFitHeight(160);
+        imageView.setFitHeight(280);
         imageView.setFitWidth(280);
         imageView.setCursor(Cursor.HAND);
         this.getChildren().addAll(name, imageView);
