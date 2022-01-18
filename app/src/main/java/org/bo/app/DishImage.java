@@ -4,6 +4,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import org.bo.list.Item.ItemDTO;
 
@@ -28,7 +29,11 @@ public class DishImage extends VBox {
         imageView.setFitWidth(280);
         imageView.setCursor(Cursor.HAND);
         this.getChildren().addAll(name, imageView);
-        this.setOnMouseClicked(event -> clickWindow());
+        this.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                clickWindow();
+            }
+        });
     }
 
     private void clickWindow() {
