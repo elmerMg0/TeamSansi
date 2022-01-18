@@ -34,7 +34,7 @@ public class App extends Application {
         HBox buttons = new Buttons(menu, menuView);
 
         root.getChildren().addAll(frame, buttons);
-        Scene scene = new Scene(root, 1120, 500);
+        Scene scene = new Scene(root, 1120, 600);
         stage.setTitle("Punto de Venta");
         stage.setScene(scene);
         stage.show();

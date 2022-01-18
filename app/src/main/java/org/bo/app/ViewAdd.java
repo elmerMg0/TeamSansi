@@ -24,6 +24,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
+import java.util.Arrays;
 
 public class ViewAdd extends VBox {
 
@@ -50,12 +52,12 @@ public class ViewAdd extends VBox {
         this.stage = stage;
         this.pathImage = "";
 
-        String path = new File("src/main/java/org/bo/app/img/confirmation.jpeg").toURI().toString();
+        String path = new File("src/main/java/org/bo/app/img/confirmation.png").toURI().toString();
         Image image = new Image(path);
         imageView = new ImageView(image);
         imageView.setVisible(false);
-        imageView.setFitHeight(50);
-        imageView.setFitWidth(50);
+        imageView.setFitHeight(25);
+        imageView.setFitWidth(25);
 
         lblName = new Label("Nombre");
         lblPrice = new Label("Precio");
@@ -180,7 +182,7 @@ public class ViewAdd extends VBox {
     private String generateNewPath() throws Exception {
         if (!pathImage.equals("")) {
             byte[] bytes = loadImage64(pathImage);
-            String[] pathImages = pathImage.split("/");
+            String [] pathImages = pathImage.split("\\\\");
             String newPath = PATH + pathImages[pathImages.length - 1];
             File newImage = new File(newPath);
             FileUtils.writeByteArrayToFile(newImage, bytes);
