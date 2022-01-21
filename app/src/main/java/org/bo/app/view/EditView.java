@@ -1,4 +1,5 @@
-package org.bo.app;
+package org.bo.app.view;
+
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,8 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
-import org.bo.list.Item.Dish;
-import org.bo.list.Item.Drink;
+import org.bo.app.MenuView;
 import org.bo.list.Item.ItemDTO;
 import org.bo.list.menu.Menu;
 
@@ -24,53 +24,30 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
-import java.util.Arrays;
 
-public class ViewAdd extends VBox {
+public class EditView extends View {
 
-    private final static String PATH = "src/main/java/org/bo/app/img/";
+    private String oldPath;
 
-    private Stage stage;
-    private Label lblName, lblPrice, lblDescription, lblChooseItem;
-    private TextField textName, textPrice;
-    private TextArea textDescription;
-    private Button btnSearchPath, btnCancel, btnAccept;
-    private ComboBox<String> cbx;
-    private GridPane buttons;
-    private String pathImage;
-    private HBox searchPathChooseItemHBox, searchPathHBox, chooseItemHBox;
-    private ImageView imageView;
+    public EditView(Stage stage, ItemDTO dish, Menu menu, GridPane menuView) {
+        super(stage, dish, menu, menuView);
 
-    private Menu menu;
-    private GridPane menuView;
+        this.oldPath = "";
 
-    public ViewAdd(Stage stage, Menu menu, GridPane menuView) {
-        this.menu = menu;
-        this.menuView = menuView;
+        boolean isVisible = !dish.getPathImage().equals("");
+        imageView.setVisible(isVisible);
 
-        this.stage = stage;
-        this.pathImage = "";
+        textName.setText(dish.getName());
+        textPrice.setText(String.valueOf(dish.getPrice()));
+        textDescription.setWrapText(true);
+        textDescription.setText(dish.getDescription());
 
-        String path = new File("src/main/java/org/bo/app/img/confirmation.png").toURI().toString();
-        Image image = new Image(path);
-        imageView = new ImageView(image);
-        imageView.setVisible(false);
-        imageView.setFitHeight(25);
-        imageView.setFitWidth(25);
+        cbx.setValue(dish.isDish() ? "Comida" : "Bebida");
 
-        lblName = new Label("Nombre");
-        lblPrice = new Label("Precio");
-        lblDescription = new Label("Descripcion");
-        lblChooseItem = new Label("Elegit item");
-
-        btnSearchPath = new Button("Buscar Foto");
-        btnAccept = new Button("ACEPTAR");
-        btnCancel = new Button("CANCELAR");
-
+        btnAccept.setText("Guardar Cambios");
         btnAccept.setOnMouseClicked(event -> {
             try {
-                insertDates();
+                updateDates();
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -78,35 +55,6 @@ public class ViewAdd extends VBox {
             }
         });
         btnCancel.setOnMouseClicked(event -> stage.close());
-
-        textName = new TextField();
-        textPrice = new TextField();
-        textPrice.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    textPrice.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-            }
-        });
-
-        textDescription = new TextArea();
-
-        ObservableList<String> items = FXCollections.observableArrayList();
-        items.addAll("Bebida", "Comida");
-        cbx = new ComboBox<>(items);
-
-        searchPathChooseItemHBox = generateHBox();
-
-        buttons = new GridPane();
-        insertElements(buttons);
-
-        this.getChildren().addAll(lblName, textName, lblPrice, textPrice, lblDescription, textDescription, searchPathChooseItemHBox, buttons);
-        this.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(10, 5, 10, 5));
-        VBox.setMargin(textDescription, new Insets(0, 10, 10, 10));
-        VBox.setMargin(textName, new Insets(0, 10, 10, 10));
-        VBox.setMargin(textPrice, new Insets(0, 10, 10, 10));
 
         btnSearchPath.setOnMouseClicked(event -> searchPath());
 
@@ -155,7 +103,7 @@ public class ViewAdd extends VBox {
         System.out.println(pathImage);
     }
 
-    private void insertDates() throws Exception {
+    private void updateDates() throws Exception {
         if (textName.getText().length() == 0 || textPrice.getText().length() == 0
                 || textDescription.getText().length() == 0 || cbx.getValue() == null) {
             generateAlert("Advertencia!!!", "Debe llenar los campos");
@@ -166,27 +114,30 @@ public class ViewAdd extends VBox {
         String description = textDescription.getText();
         String dish = cbx.getValue();
         boolean isDish = dish.equals("Comida");
-
+        oldPath = item.getPathImage();
         String newPath = generateNewPath();
+        item.setName(name);
+        item.setPrice(price);
+        item.setDescription(description);
+        item.setDish(isDish);
 
         if (newPath.length() == 0) {
-            generateAlert("Advertencia!!!", "Debe agregar una imagen");
+            item.setPathImage(oldPath);
         } else {
-            ItemDTO itemDTO = isDish ? new Dish(name, description, price, newPath) : new Drink(name, description, price, newPath);
-            menu.addItem(itemDTO);
-            ((MenuView) menuView).refresh();
-            stage.close();
+            item.setPathImage(newPath);
         }
+
+        menu.update(item);
+        ((MenuView) menuView).refresh();
+        stage.close();
     }
 
     private String generateNewPath() throws Exception {
         if (!pathImage.equals("")) {
             byte[] bytes = loadImage64(pathImage);
-            String [] pathImages = pathImage.split("\\\\");
-            String newPath = PATH + pathImages[pathImages.length - 1];
-            File newImage = new File(newPath);
-            FileUtils.writeByteArrayToFile(newImage, bytes);
-            return newPath;
+            File oldImage = new File(oldPath);
+            FileUtils.writeByteArrayToFile(oldImage, bytes);
+            return item.getPathImage();
         } else {
 //            generateAlert("Advertencia!!!", "Debe seleccionar una imagen");
             return "";
@@ -215,4 +166,5 @@ public class ViewAdd extends VBox {
     }
 
 }
+
 

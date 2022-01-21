@@ -3,15 +3,13 @@ package org.bo.app;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.bo.app.view.AddView;
 import org.bo.list.menu.Menu;
-
-import java.awt.event.MouseEvent;
 
 public class Buttons extends HBox {
     private Button btnPrint, btnAdd, btnEdit;
@@ -46,7 +44,7 @@ public class Buttons extends HBox {
 
     private void createWindowAdded() {
         Stage stage = new Stage();
-        VBox viewAdd = new ViewAdd(stage, menu, menuView);
+        VBox viewAdd = new AddView(stage, menu, menuView);
         Scene scene = new Scene(viewAdd, 400, 400);
         stage.setX(800);
         stage.setY(220);

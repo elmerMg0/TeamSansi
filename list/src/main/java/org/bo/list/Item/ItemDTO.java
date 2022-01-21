@@ -86,12 +86,12 @@ public class ItemDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemDTO itemDTO = (ItemDTO) o;
-        return Objects.equals(name, itemDTO.name);
+        return idItem == itemDTO.idItem;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(idItem);
     }
 
     @Override
