@@ -1,4 +1,4 @@
-package org.bo.app;
+package org.bo.app.view;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,36 +13,48 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.bo.app.MenuView;
 import org.bo.list.Item.ItemDTO;
 import org.bo.list.menu.Menu;
 
 import java.io.File;
+import java.sql.SQLException;
 
-public class ReadView extends VBox {
+public class View extends VBox {
 
-    private Stage stage;
-    private ItemDTO dish;
-    private Label lblName, lblPrice, lblDescription, lblChooseItem;
-    private TextField textName, textPrice;
-    private TextArea textDescription;
-    private Button btnSearchPath, btnEdit, btnAccept;
-    private ComboBox<String> cbx;
-    private GridPane buttons;
-    private HBox searchPathChooseItemHBox, searchPathHBox, chooseItemHBox;
-    private ImageView imageView;
+    protected final static String PATH = "src/main/java/org/bo/app/img/";
+    protected ItemDTO item;
 
-    private Menu menu;
-    private GridPane menuView;
+    protected Stage stage;
+    protected Label lblName, lblPrice, lblDescription, lblChooseItem;
+    protected TextField textName, textPrice;
+    protected TextArea textDescription;
+    protected Button btnSearchPath, btnCancel, btnAccept;
+    protected ComboBox<String> cbx;
+    protected GridPane buttons;
+    protected String pathImage;
+    protected HBox searchPathChooseItemHBox, searchPathHBox, chooseItemHBox;
+    protected ImageView imageView;
 
-    public ReadView(Stage stage, ItemDTO dish) {
+    protected Menu menu;
+    protected GridPane menuView;
+
+    public View(Stage stage, ItemDTO item, Menu menu, GridPane menuView) {
+        this(stage, menu, menuView);
+        this.item = item;
+    }
+
+    public View(Stage stage, Menu menu, GridPane menuView) {
+        this.menu = menu;
+        this.menuView = menuView;
+
         this.stage = stage;
-        this.dish = dish;
+        this.pathImage = "";
 
         String path = new File("src/main/java/org/bo/app/img/confirmation.png").toURI().toString();
         Image image = new Image(path);
         imageView = new ImageView(image);
-        boolean isVisible = !dish.getPathImage().equals("");
-        imageView.setVisible(isVisible);
+        imageView.setVisible(false);
         imageView.setFitHeight(25);
         imageView.setFitWidth(25);
 
@@ -53,12 +65,10 @@ public class ReadView extends VBox {
 
         btnSearchPath = new Button("Buscar Foto");
         btnAccept = new Button("ACEPTAR");
-        btnEdit = new Button("EDITAR");
+        btnCancel = new Button("CANCELAR");
 
         textName = new TextField();
-        textName.setEditable(false);
         textPrice = new TextField();
-        textPrice.setEditable(false);
         textPrice.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -68,26 +78,16 @@ public class ReadView extends VBox {
             }
         });
 
-        textName.setText(dish.getName());
-        textPrice.setText(String.valueOf(dish.getPrice()));
-
         textDescription = new TextArea();
-        textDescription.setEditable(false);
-        textDescription.setWrapText(true);
-        textDescription.setText(dish.getDescription());
 
         ObservableList<String> items = FXCollections.observableArrayList();
         items.addAll("Bebida", "Comida");
         cbx = new ComboBox<>(items);
-        cbx.setEditable(false);
-        cbx.setValue(dish.isDish() ? "Comida" : "Bebida");
 
         searchPathChooseItemHBox = generateHBox();
 
         buttons = new GridPane();
         insertElements(buttons);
-
-        btnAccept.setOnMouseClicked(event -> stage.close());
 
         this.getChildren().addAll(lblName, textName, lblPrice, textPrice, lblDescription, textDescription, searchPathChooseItemHBox, buttons);
         this.setAlignment(Pos.CENTER);
@@ -117,7 +117,7 @@ public class ReadView extends VBox {
     }
 
     private void insertElements(GridPane grilla) {
-        grilla.add(btnEdit, 0, 0);
+        grilla.add(btnCancel, 0, 0);
         grilla.add(btnAccept, 1, 0);
         grilla.setAlignment(Pos.CENTER);
         grilla.setPadding(new Insets(10, 10, 10, 10));
@@ -125,4 +125,7 @@ public class ReadView extends VBox {
         grilla.setVgap(15);
     }
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 }

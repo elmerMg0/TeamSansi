@@ -34,7 +34,7 @@ public class MenuView extends GridPane {
         int column = 0;
         int row = 0;
         for (ItemDTO dish : dishes) {
-            this.add(new DishImage(dish,orderDetail), column, row);
+            this.add(new DishImage(dish,orderDetail, menu, this), column, row);
             column++;
             if (column % 3 == 0) {
                 row++;

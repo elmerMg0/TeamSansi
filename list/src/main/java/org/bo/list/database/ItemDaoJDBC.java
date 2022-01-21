@@ -138,7 +138,7 @@ public class ItemDaoJDBC implements ItemDao {
         int result = 0;
         try {
             conn = this.connection != null ? this.connection : ConnectionDatabase.getConnection();
-            statement = conn.prepareCall(SQL_UPDATE);
+            statement = conn.prepareStatement(SQL_UPDATE);
             statement.setString(1, itemDTO.getName());
             statement.setString(2, itemDTO.getDescription());
             statement.setDouble(3, itemDTO.getPrice());
