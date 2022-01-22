@@ -8,7 +8,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.skin.TableHeaderRow;
 import javafx.scene.layout.VBox;
 import org.bo.list.Item.ItemDTO;
 
@@ -41,7 +40,8 @@ public class OrderDetail extends VBox {
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         colQuantity.setCellValueFactory(param -> {
             ItemDTO itemDTO = param.getValue();
-            Spinner<Integer> spinner = new Spinner<Integer>(0, 10, 1);
+            int value = order.get(itemDTO);
+            Spinner<Integer> spinner = new Spinner<Integer>(0, 10, value);
             spinner.valueProperty().addListener((obs, oldValue, newValue) -> {
                         order.put(itemDTO, newValue);
                     }
