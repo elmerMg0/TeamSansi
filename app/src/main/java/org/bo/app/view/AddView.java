@@ -39,6 +39,7 @@ public class AddView extends View {
                 e.printStackTrace();
             }
         });
+        btnCancel.setOnMouseClicked(event -> stage.close());
 
         btnSearchPath.setOnMouseClicked(event -> searchPath());
 

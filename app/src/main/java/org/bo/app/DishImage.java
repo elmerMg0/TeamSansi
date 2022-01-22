@@ -69,9 +69,9 @@ public class DishImage extends VBox {
         System.out.println("Click");
         isInOrdenDetail = !isInOrdenDetail;
         if (isInOrdenDetail && !((OrderDetail) orderDetail).getTableOrders().getItems().contains(dish)) {
-            ((OrderDetail) orderDetail).getTableOrders().getItems().add(dish);
+            ((OrderDetail) orderDetail).addDish(dish);
         } else {
-            ((OrderDetail) orderDetail).getTableOrders().getItems().remove(dish);
+            ((OrderDetail) orderDetail).removeDish(dish);
         }
     }
 
