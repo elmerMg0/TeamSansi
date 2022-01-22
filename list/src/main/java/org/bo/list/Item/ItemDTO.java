@@ -8,12 +8,7 @@ public class ItemDTO {
     protected String description;
     protected double price;
     protected boolean isDish;
-    protected int quantity;
     protected String pathImage;
-
-    public ItemDTO() {
-        this.quantity = 0;
-    }
 
     public ItemDTO(int idItem, String name, String description, double price, String pathImage) {
         this(name, description, price, pathImage);
@@ -21,7 +16,6 @@ public class ItemDTO {
     }
 
     public ItemDTO(String name, String description, double price, String pathImage) {
-        this();
         this.idItem = 0;
         this.name = name;
         this.description = description;
@@ -65,14 +59,6 @@ public class ItemDTO {
         isDish = dish;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public String getPathImage() {
         return pathImage;
     }
@@ -97,11 +83,9 @@ public class ItemDTO {
     @Override
     public String toString() {
         return "ItemDTO{" +
-                "idItem=" + idItem +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
-                ", isDish=" + isDish +
                 '}';
     }
 }
