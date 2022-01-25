@@ -20,9 +20,9 @@ public class Buttons extends HBox {
         this.menu = menu;
         this.menuView = menuView;
 
-        btnPrint = new Button("IMPRIMIR");
+        btnPrint = new Button("IMPRIMIR FACTURA");
         btnAdd = new Button("AÑADIR");
-        btnEdit = new Button("EDITAR");
+        btnEdit = new Button("IMPRIMIR PEDIDO");
 
         btnPrint.setFont(new Font("Arial", 20));
         btnPrint.setStyle("-fx-text-fill: White; -fx-background-color: Green");
