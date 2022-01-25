@@ -33,7 +33,7 @@ public class Buttons extends HBox {
 
         btnAdd.setOnMouseClicked(event -> createWindowAdded());
 
-        this.setSpacing(290);
+        this.setSpacing(200);
         setMargin(btnPrint, new Insets(30));
         setMargin(btnAdd, new Insets(30));
         setMargin(btnEdit, new Insets(30));
