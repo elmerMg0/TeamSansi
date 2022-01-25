@@ -9,4 +9,5 @@ plugins {
 dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
     implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.apache.pdfbox:pdfbox:3.0.0-RC1'
 }
