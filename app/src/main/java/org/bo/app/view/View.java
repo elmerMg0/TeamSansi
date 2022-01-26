@@ -22,7 +22,7 @@ import java.sql.SQLException;
 
 public class View extends VBox {
 
-    protected final static String PATH = "src/main/java/org/bo/app/img/";
+    protected final static String PATH = "src/main/java/org/bo/app/img/dish";
     protected ItemDTO item;
 
     protected Stage stage;
