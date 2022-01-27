@@ -45,7 +45,7 @@ public class OrderDetail extends VBox {
         colQuantity.setCellValueFactory(param -> {
             ItemDTO itemDTO = param.getValue();
             int value = order.get(itemDTO);
-            Spinner<Integer> spinner = new Spinner<Integer>(0, 10, value);
+            Spinner<Integer> spinner = new Spinner<Integer>(1, 10, value);
             spinner.valueProperty().addListener((obs, oldValue, newValue) -> {
                         order.put(itemDTO, newValue);
                     }

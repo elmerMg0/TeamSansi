@@ -6,21 +6,18 @@ import org.bo.list.database.ItemDao;
 import org.bo.list.database.ItemDaoJDBC;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Menu {
 
     private ItemDao connection;
     private Set<ItemDTO> avaibleItems;
-    private Set<ItemDTO> orderDishes;
+    private Map<ItemDTO, Integer> orderDishes;
 
     public Menu() throws SQLException {
         this.connection = new ItemDaoJDBC(ConnectionDatabase.getConnection());
         this.avaibleItems = new HashSet<>();
-        this.orderDishes = new HashSet<>();
+        this.orderDishes = new HashMap<>();
         updateData();
     }
 
@@ -48,8 +45,16 @@ public class Menu {
         });
     }
 
-    public void addOrder(ItemDTO item) {
-        orderDishes.add(item);
+    public void addOrder(ItemDTO item, int value) {
+        orderDishes.put(item, value);
+    }
+
+    public void setOrderDishes(Map<ItemDTO, Integer> orderDishes) {
+        this.orderDishes = orderDishes;
+    }
+
+    public Map<ItemDTO, Integer> getOrderDishes() {
+        return orderDishes;
     }
 
     public List<ItemDTO> select() {
