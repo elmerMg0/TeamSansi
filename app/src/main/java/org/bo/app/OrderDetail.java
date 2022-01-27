@@ -20,6 +20,10 @@ public class OrderDetail extends VBox {
     private TableView<ItemDTO> tableOrders;
     private Map<ItemDTO, Integer> order;
 
+    public Map<ItemDTO, Integer> getOrder() {
+        return order;
+    }
+
     public OrderDetail() {
         this.title = new Label("Detalle del pedido");
         this.title.setStyle("-fx-font-weight: bold;");

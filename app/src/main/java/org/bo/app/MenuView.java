@@ -45,6 +45,10 @@ public class MenuView extends GridPane {
         }
     }
 
+    public VBox getOrderDetail() {
+        return orderDetail;
+    }
+
     public void refresh() {
         dishes.clear();
         this.getChildren().clear();
