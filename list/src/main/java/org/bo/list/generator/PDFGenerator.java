@@ -6,6 +6,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.printing.PDFPageable;
 import org.bo.list.menu.Menu;
 import org.vandeseer.easytable.TableDrawer;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
@@ -13,7 +14,11 @@ import org.vandeseer.easytable.structure.Row;
 import org.vandeseer.easytable.structure.Table;
 import org.vandeseer.easytable.structure.cell.TextCell;
 
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import java.awt.*;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,7 +36,7 @@ public class PDFGenerator {
         this.menu = menu;
     }
 
-    public void fillHeader() throws IOException {
+    public void fillHeader() throws IOException, PrinterException {
         document = new PDDocument();
         page = new PDPage(PDRectangle.A4);
         document.addPage(page);
@@ -96,8 +101,19 @@ public class PDFGenerator {
 
         contentStream.close();
         document.save("src/main/java/org/bo/app/pdf/" + LocalDate.now() + ".pdf");
-
+        printPDF();
     }
+
+    private void printPDF() throws PrinterException {
+         PrinterJob printerJob = PrinterJob.getPrinterJob();
+        if(printerJob.printDialog()) {
+            printerJob.setPageable(new PDFPageable(document));
+            PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+            printerJob.setPrintService(service);
+            printerJob.print();
+        }
+    }
+
 
     private double fillItems() {
         AtomicReference<Double> finaltotal = new AtomicReference<>((double) 0);

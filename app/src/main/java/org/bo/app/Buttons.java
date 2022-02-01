@@ -99,13 +99,6 @@ public class Buttons extends HBox {
 
     private void printTicket() throws IOException, PrinterException {
         pdfGenerator.fillHeader();
-        /*PrinterJob printerJob = PrinterJob.getPrinterJob();
-        if(printerJob.printDialog()) {
-            printerJob.setPageable(new PDFPageable(document));
-            PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-            printerJob.setPrintService(service);
-            printerJob.print();
-        }*/
     }
 
 }
