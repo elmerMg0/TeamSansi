@@ -20,6 +20,10 @@ public class OrderDetail extends VBox {
     private TableView<ItemDTO> tableOrders;
     private Map<ItemDTO, Integer> order;
 
+    public Map<ItemDTO, Integer> getOrder() {
+        return order;
+    }
+
     public OrderDetail() {
         this.title = new Label("Detalle del pedido");
         this.title.setStyle("-fx-font-weight: bold;");
@@ -41,7 +45,7 @@ public class OrderDetail extends VBox {
         colQuantity.setCellValueFactory(param -> {
             ItemDTO itemDTO = param.getValue();
             int value = order.get(itemDTO);
-            Spinner<Integer> spinner = new Spinner<Integer>(0, 10, value);
+            Spinner<Integer> spinner = new Spinner<Integer>(1, 10, value);
             spinner.valueProperty().addListener((obs, oldValue, newValue) -> {
                         order.put(itemDTO, newValue);
                     }

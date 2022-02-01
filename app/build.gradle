@@ -12,6 +12,9 @@ dependencies {
     implementation 'org.apache.commons:commons-text'
     implementation 'commons-io:commons-io:2.11.0'
     implementation project(':utilities')
+    implementation 'com.github.vandeseer:easytable:0.8.5'
+    implementation 'org.apache.pdfbox:pdfbox:3.0.0-RC1'
+
 }
 
 application {
