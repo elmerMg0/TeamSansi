@@ -65,4 +65,16 @@ public class WaiterDTO {
     public void setInitDate(String initDate) {
         this.initDate = initDate;
     }
+
+    @Override
+    public String toString() {
+        return "WaiterDTO{" +
+                "ci=" + ci +
+                ", name='" + name + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", phone=" + phone +
+                ", initDate='" + initDate + '\'' +
+                ", path='" + path + '\'' +
+                '}';
+    }
 }

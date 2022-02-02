@@ -16,6 +16,7 @@ import org.bo.list.menu.Menu;
 import java.awt.print.PrinterException;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Buttons extends HBox {
     private Button btnPrintInvoice, btnAdd, btnPrintForKitchen;
@@ -61,7 +62,13 @@ public class Buttons extends HBox {
                 e.printStackTrace();
             }
         });
-        btnPrintInvoice.setOnAction(event -> generateWindowInvoice());
+        btnPrintInvoice.setOnAction(event -> {
+            try {
+                generateWindowInvoice();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void createWindowAdded() {
@@ -76,7 +83,7 @@ public class Buttons extends HBox {
         stage.show();
     }
 
-    private void generateWindowInvoice() {
+    private void generateWindowInvoice() throws SQLException {
         Stage stage = new Stage();
         VBox viewAdd = new InvoiceView(menu, stage);
         Scene scene = new Scene(viewAdd, 400, 400);
