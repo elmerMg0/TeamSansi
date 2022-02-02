@@ -10,13 +10,13 @@ public class WaiterDaoJDBC implements WaiterDao {
 
     private Connection connection;
 
-    private static final String SQL_SELECT = "SELECT * FROM user;";
-    private static final String SQL_SELECT_PARAMETER = "SELECT * FROM user where ci = ?;";
-    private static final String SQL_DELETE = "DELETE FROM user WHERE ci = ?";
+    private static final String SQL_SELECT = "SELECT * FROM waiter;";
+    private static final String SQL_SELECT_PARAMETER = "SELECT * FROM waiter where ci = ?;";
+    private static final String SQL_DELETE = "DELETE FROM waiter WHERE ci = ?";
 
-    private static final String SQL_INSERT = "INSERT INTO user(ci, name, birth_date, phone, init_date, path) " +
+    private static final String SQL_INSERT = "INSERT INTO waiter(ci, name, birth_date, phone, init_date, path) " +
             "VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE user SET name = ?, birth_date = ?, phone = ?, init_date = ?, " +
+    private static final String SQL_UPDATE = "UPDATE waiter SET name = ?, birth_date = ?, phone = ?, init_date = ?, " +
             "path = ? WHERE ci = ?";
 
     public WaiterDaoJDBC(Connection connection) {
