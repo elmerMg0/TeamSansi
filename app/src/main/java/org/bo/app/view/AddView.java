@@ -88,7 +88,7 @@ public class AddView extends View {
     private String generateNewPath() throws Exception {
         if (!pathImage.equals("")) {
             byte[] bytes = loadImage64(pathImage);
-            String [] pathImages = pathImage.split("/");
+            String [] pathImages = pathImage.split("\\\\");
             String newPath = PATH + pathImages[pathImages.length - 1];
             File newImage = new File(newPath);
             FileUtils.writeByteArrayToFile(newImage, bytes);
