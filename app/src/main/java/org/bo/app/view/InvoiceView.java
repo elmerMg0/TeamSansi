@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.bo.list.Item.ItemDTO;
 import org.bo.list.Order;
 import org.bo.list.menu.Menu;
 import org.bo.list.waiter.WaiterDTO;
@@ -22,6 +23,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class InvoiceView extends VBox {
@@ -36,13 +38,13 @@ public class InvoiceView extends VBox {
     private ComboBox<String> waiters;
     private ImageView waiterPhoto;
 
-    private Menu menu;
+    private Map<ItemDTO, Integer> order;
     private Stage stage;
     private WaiterManagement waiterManagement;
     private List<WaiterDTO> listOfWaiters;
 
-    public InvoiceView(Menu menu, Stage stage) throws SQLException {
-        this.menu = menu;
+    public InvoiceView(Map<ItemDTO, Integer> order, Stage stage) throws SQLException {
+        this.order = order;
         this.stage = stage;
         this.waiterManagement = new WaiterManagement();
         this.listOfWaiters = waiterManagement.selectWaiters();
@@ -145,7 +147,7 @@ public class InvoiceView extends VBox {
 
     private double addDishes() {
         List<Order> orders = new ArrayList<>();
-        this.menu.getOrderDishes().forEach((itemDTO, quantity) -> {
+        order.forEach((itemDTO, quantity) -> {
             double total = itemDTO.getPrice() * quantity;
             Order order = new Order(itemDTO.getName(), quantity, itemDTO.getPrice(), total);
             orders.add(order);

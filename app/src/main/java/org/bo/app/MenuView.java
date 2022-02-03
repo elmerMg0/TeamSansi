@@ -11,14 +11,12 @@ import java.util.List;
 
 public class MenuView extends GridPane {
 
-    private Menu menu;
     private List<ItemDTO> dishes;
     private VBox orderDetail;
 
-    public MenuView(Menu menu, VBox orderDetail) {
+    public MenuView(List<ItemDTO> dishes, VBox orderDetail) {
         this.orderDetail = orderDetail;
-        this.menu = menu;
-        dishes = menu.select();
+        this.dishes = dishes;
 
         this.setAlignment(Pos.CENTER);
         this.setPadding(new Insets(10, 10, 10, 10));
@@ -34,7 +32,7 @@ public class MenuView extends GridPane {
         int column = 0;
         int row = 0;
         for (ItemDTO dish : dishes) {
-            this.add(new DishImage(dish,orderDetail, menu, this), column, row);
+            this.add(new DishImage(dish, orderDetail), column, row);
             column++;
             if (column % 3 == 0) {
                 row++;
@@ -43,17 +41,6 @@ public class MenuView extends GridPane {
                 column = 0;
             }
         }
-    }
-
-    public VBox getOrderDetail() {
-        return orderDetail;
-    }
-
-    public void refresh() {
-        dishes.clear();
-        this.getChildren().clear();
-        dishes = menu.select();
-        fillDishImage();
     }
 
 }

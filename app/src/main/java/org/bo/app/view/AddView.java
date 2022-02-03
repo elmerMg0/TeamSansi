@@ -28,8 +28,8 @@ import java.sql.SQLException;
 
 public class AddView extends View {
 
-    public AddView(Stage stage, Menu menu, GridPane menuView) {
-        super(stage, menu, menuView);
+    public AddView(Stage stage) {
+        super(stage);
         btnAccept.setOnMouseClicked(event -> {
             try {
                 insertDates();
@@ -80,7 +80,6 @@ public class AddView extends View {
         } else {
             ItemDTO itemDTO = isDish ? new Dish(name, description, price, newPath) : new Drink(name, description, price, newPath);
             menu.addItem(itemDTO);
-            ((MenuView) menuView).refresh();
             stage.close();
         }
     }

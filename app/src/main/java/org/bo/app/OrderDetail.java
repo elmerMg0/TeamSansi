@@ -20,10 +20,6 @@ public class OrderDetail extends VBox {
     private TableView<ItemDTO> tableOrders;
     private Map<ItemDTO, Integer> order;
 
-    public Map<ItemDTO, Integer> getOrder() {
-        return order;
-    }
-
     public OrderDetail() {
         this.title = new Label("Detalle del pedido");
         this.title.setStyle("-fx-font-weight: bold;");
@@ -76,6 +72,10 @@ public class OrderDetail extends VBox {
     public void removeDish(ItemDTO dish) {
         order.remove(dish);
         tableOrders.getItems().remove(dish);
+    }
+
+    public Map<ItemDTO, Integer> getOrder() {
+        return order;
     }
 
 }

@@ -10,6 +10,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.bo.app.view.AddView;
 import org.bo.app.view.InvoiceView;
+import org.bo.list.Item.ItemDTO;
 import org.bo.list.generator.PDFGenerator;
 import org.bo.list.menu.Menu;
 
@@ -17,22 +18,19 @@ import java.awt.print.PrinterException;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class Buttons extends HBox {
-    private Button btnPrintInvoice, btnAdd, btnPrintForKitchen;
-    private Menu menu;
-    private GridPane menuView;
-    private OrderDetail orderDetail;
+    private Button btnPrintInvoice, btnPrintForKitchen;
+    private Map<ItemDTO, Integer> order;
     private PDFGenerator pdfGenerator;
 
-    public Buttons(Menu menu, GridPane menuView, OrderDetail orderDetail) throws IOException {
-        this.menu = menu;
-        this.menuView = menuView;
-        this.orderDetail = orderDetail;
-        this.pdfGenerator = new PDFGenerator(menu);
+    public Buttons(Map<ItemDTO, Integer> order) throws IOException {
+        this.order = order;
+        this.pdfGenerator = new PDFGenerator(order);
 
         btnPrintInvoice = new Button("IMPRIMIR FACTURA");
-        btnAdd = new Button("AÑADIR");
         btnPrintForKitchen = new Button("IMPRIMIR PEDIDO");
 
         btnPrintInvoice.setFont(new Font("Arial", 20));
@@ -40,25 +38,17 @@ public class Buttons extends HBox {
 
         btnPrintForKitchen.setFont(new Font("Arial", 20));
         btnPrintForKitchen.setStyle("-fx-background-color: Red ; -fx-text-fill:White");
-        btnAdd.setFont(new Font("Arial", 20));
-
-        btnAdd.setOnMouseClicked(event -> createWindowAdded());
 
         this.setSpacing(200);
         setMargin(btnPrintInvoice, new Insets(30));
-        setMargin(btnAdd, new Insets(30));
         setMargin(btnPrintForKitchen, new Insets(30));
 
-        getChildren().addAll(btnPrintInvoice, btnPrintForKitchen, btnAdd);
-
-        menu.setOrderDishes(orderDetail.getOrder());
+        getChildren().addAll(btnPrintInvoice, btnPrintForKitchen);
 
         btnPrintForKitchen.setOnAction(event -> {
             try {
                 printTicket();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (PrinterException e) {
+            } catch (IOException | PrinterException e) {
                 e.printStackTrace();
             }
         });
@@ -71,9 +61,9 @@ public class Buttons extends HBox {
         });
     }
 
-    private void createWindowAdded() {
+    /*private void createWindowAdded() {
         Stage stage = new Stage();
-        VBox viewAdd = new AddView(stage, menu, menuView);
+        VBox viewAdd = new AddView(stage, menuView);
         Scene scene = new Scene(viewAdd, 400, 400);
         stage.setX(800);
         stage.setY(220);
@@ -81,11 +71,11 @@ public class Buttons extends HBox {
         stage.setScene(scene);
         stage.setTitle("Añadir nuevo item");
         stage.show();
-    }
+    }*/
 
     private void generateWindowInvoice() throws SQLException {
         Stage stage = new Stage();
-        VBox viewAdd = new InvoiceView(menu, stage);
+        VBox viewAdd = new InvoiceView(order, stage);
         Scene scene = new Scene(viewAdd, 400, 400);
         stage.setX(800);
         stage.setY(220);

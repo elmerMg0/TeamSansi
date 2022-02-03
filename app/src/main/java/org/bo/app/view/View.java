@@ -39,15 +39,12 @@ public class View extends VBox {
     protected Menu menu;
     protected GridPane menuView;
 
-    public View(Stage stage, ItemDTO item, Menu menu, GridPane menuView) {
-        this(stage, menu, menuView);
+    public View(Stage stage, ItemDTO item) {
+        this(stage);
         this.item = item;
     }
 
-    public View(Stage stage, Menu menu, GridPane menuView) {
-        this.menu = menu;
-        this.menuView = menuView;
-
+    public View(Stage stage) {
         this.stage = stage;
         this.pathImage = "";
 

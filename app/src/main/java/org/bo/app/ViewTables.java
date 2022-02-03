@@ -6,9 +6,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import org.bo.list.Item.ItemDTO;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ViewTables extends VBox {
     private final int quantityTables = 21;
@@ -17,7 +19,12 @@ public class ViewTables extends VBox {
     private Button btnEditWaiters;
     private GridPane tables;
     private HBox buttons;
-    public ViewTables() throws SQLException, IOException {
+
+    private List<ItemDTO> dishes;
+
+    public ViewTables(List<ItemDTO> dishes) throws SQLException, IOException {
+        this.dishes = dishes;
+
         tables = new GridPane();
         buttons = new HBox();
         putButtons();
@@ -31,7 +38,7 @@ public class ViewTables extends VBox {
         int row = 0;
         int i = 1;
         while (i <= quantityTables) {
-            tables.add(new TableImage(i,this), column, row);
+            tables.add(new TableImage(i,dishes), column, row);
             i++;
             column++;
             if (column == 7) {
