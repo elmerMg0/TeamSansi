@@ -28,7 +28,7 @@ public class DishesView extends VBox {
 
         frame.getChildren().addAll(orderDetail, scrollPane);
 
-        HBox buttons = new Buttons(((OrderDetail) orderDetail).getOrder());
+        HBox buttons = new Buttons((OrderDetail) orderDetail);
 
         this.getChildren().addAll(frame, buttons);
     }

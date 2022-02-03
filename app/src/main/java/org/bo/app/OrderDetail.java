@@ -74,6 +74,11 @@ public class OrderDetail extends VBox {
         tableOrders.getItems().remove(dish);
     }
 
+    public void clearDishes() {
+        order.clear();
+        tableOrders.getItems().clear();
+    }
+
     public Map<ItemDTO, Integer> getOrder() {
         return order;
     }

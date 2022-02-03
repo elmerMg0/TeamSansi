@@ -7,7 +7,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.bo.app.view.DishesView;
-import org.bo.app.view.InvoiceView;
 import org.bo.list.Item.ItemDTO;
 import org.bo.list.menu.Menu;
 
@@ -23,13 +22,13 @@ public class TableImage extends VBox {
     private Menu menu;
     private Stage stage;
     private Scene scene;
-    private int number;
+    private int tableNumber;
 
     private List<ItemDTO> dishes;
 
     public TableImage(int number, List<ItemDTO> dishes) throws SQLException, IOException {
         this.dishes = dishes;
-        this.number = number;
+        this.tableNumber = number;
 
         this.dishesView = new DishesView(dishes);
         path = new File("src/main/java/org/bo/app/img/table/Table" + number + ".png").toURI().toString();
@@ -49,13 +48,13 @@ public class TableImage extends VBox {
 
     }
 
-    private void windowDishesView() {
+    public void windowDishesView() {
 
         stage.setX(350);
         stage.setY(200);
 
         stage.setScene(scene);
-        stage.setTitle("Mesa nro " + number);
+        stage.setTitle("Mesa nro " + tableNumber);
         stage.show();
     }
 
