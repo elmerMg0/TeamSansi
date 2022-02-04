@@ -23,7 +23,7 @@ import java.util.Base64;
 public class Test {
 
     public static void main(String[] args) throws IOException, GeneralSecurityException {
-        String password = "password";
+        /*String password = "password";
         byte[] salt = "12345678".getBytes();
         int iterationCount = 40000;
         int keyLength = 128;
@@ -34,7 +34,15 @@ public class Test {
         String encryptedPassword = encrypt(originalPassword, key);
         System.out.println("Encrypted password: " + encryptedPassword);
         String decryptedPassword = decrypt(encryptedPassword, key);
-        System.out.println("Decrypted password: " + decryptedPassword);
+        System.out.println("Decrypted password: " + decryptedPassword);*/
+
+        String password = "Contraseña";
+        String encrypted = Base64.getEncoder().encodeToString(password.getBytes());
+
+        byte[] bytesDecoded = Base64.getDecoder().decode(encrypted);
+        password = new String(bytesDecoded);
+        System.out.println(encrypted);
+        System.out.println(password);
     }
 
     public static SecretKeySpec createSecretKey(char[] password, byte[] salt, int iterationCount, int keyLength) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeySpecException {
