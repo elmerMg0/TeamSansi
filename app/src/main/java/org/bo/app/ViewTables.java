@@ -1,11 +1,15 @@
 package org.bo.app;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import org.bo.list.Item.ItemDTO;
 
 import java.io.IOException;
@@ -30,6 +34,27 @@ public class ViewTables extends VBox {
         putButtons();
         fillTables();
         this.getChildren().addAll(buttons,tables);
+        btnInitialSesion.setOnMouseClicked(event -> createPopup());
+    }
+
+    private void createPopup() {
+        Stage stage = new Stage();
+        VBox pop_up = new VBox();
+        Label userName = new Label("Inicar Sesion");
+        Label password = new Label("Contraseña");
+        TextField txtUserName = new TextField();
+        TextField txtPassword = new TextField();
+        /*.add(userName,0,0);
+        pop_up.add(password,1,0);
+        pop_up.add(txtUserName,0,1);
+        pop_up.add(txtPassword,1,1);*/
+        pop_up.getChildren().addAll(userName,txtUserName,password,txtPassword);
+        pop_up.setAlignment(Pos.CENTER);
+        pop_up.setPadding(new Insets(10,10,10,10));
+        Scene scene = new Scene(pop_up,270,150);
+
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void fillTables( ) throws SQLException, IOException {
