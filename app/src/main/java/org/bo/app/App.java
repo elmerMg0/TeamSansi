@@ -21,19 +21,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Menu menu = new Menu();
-        VBox root = new VBox();
-        HBox frame = new HBox();
+        VBox root = new ViewTables(menu.select());
 
-        VBox orderDetail = new OrderDetail();
-        GridPane menuView = new MenuView(menu,orderDetail);
-        ScrollPane scrollPane = new ScrollPane(menuView);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-        frame.getChildren().addAll(orderDetail, scrollPane);
-
-        HBox buttons = new Buttons(menu, menuView, (OrderDetail) orderDetail);
-
-        root.getChildren().addAll(frame, buttons);
         Scene scene = new Scene(root, 1120, 600);
         stage.setTitle("Punto de Venta");
         stage.setScene(scene);

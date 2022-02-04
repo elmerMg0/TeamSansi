@@ -22,8 +22,8 @@ import java.io.File;
 
 public class ReadView extends View {
 
-    public ReadView(Stage stage, ItemDTO dish, Menu menu, GridPane menuView) {
-        super(stage, dish, menu, menuView);
+    public ReadView(Stage stage, ItemDTO dish) {
+        super(stage, dish);
 
         btnCancel.setText("EDITAR");
         btnAccept.setOnMouseClicked(event -> stage.close());
@@ -49,7 +49,7 @@ public class ReadView extends View {
     private void createEditingWindow() {
         super.stage.close();
         Stage stage = new Stage();
-        View viewAdd = new EditView(stage, super.item, menu, menuView);
+        View viewAdd = new EditView(stage, super.item);
         createWindow(stage, viewAdd);
     }
 

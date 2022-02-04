@@ -26,14 +26,11 @@ public class DishImage extends VBox {
     private VBox orderDetail;
     private ItemDTO dish;
 
-    private Menu menu;
     private GridPane menuView;
 
-    public DishImage(ItemDTO dish, VBox orderDetail, Menu menu, GridPane menuView) {
+    public DishImage(ItemDTO dish, VBox orderDetail) {
         this.dish = dish;
         this.orderDetail = orderDetail;
-        this.menu = menu;
-        this.menuView = menuView;
 
         Label name = new Label(dish.getName());
         String path = new File(dish.getPathImage()).toURI().toString();
@@ -43,14 +40,15 @@ public class DishImage extends VBox {
         ContextMenu contextMenu = new ContextMenu();
 
         MenuItem view = new MenuItem("Ver");
-        MenuItem edit = new MenuItem("Editar");
-        MenuItem delete = new MenuItem("Eliminar");
+//        MenuItem edit = new MenuItem("Editar");
+//        MenuItem delete = new MenuItem("Eliminar");
 
         view.setOnAction(event -> createReadingWindow());
-        edit.setOnAction(event -> createEditingWindow());
-        delete.setOnAction(event -> deleteItem());
+        /*edit.setOnAction(event -> createEditingWindow());
+        delete.setOnAction(event -> deleteItem());*/
 
-        contextMenu.getItems().addAll(view, edit, delete);
+//        contextMenu.getItems().addAll(view, edit, delete);
+        contextMenu.getItems().addAll(view);
         this.setOnContextMenuRequested(event -> contextMenu.show(this, event.getScreenX(), event.getScreenY()));
 
         imageView.setFitHeight(280);
@@ -77,15 +75,15 @@ public class DishImage extends VBox {
 
     private void createReadingWindow() {
         Stage stage = new Stage();
-        View viewAdd = new ReadView(stage, this.dish, menu, menuView);
+        View viewAdd = new ReadView(stage, this.dish);
         createWindow(stage, viewAdd);
     }
 
-    private void createEditingWindow() {
+    /*private void createEditingWindow() {
         Stage stage = new Stage();
         View viewAdd = new EditView(stage, this.dish, menu, menuView);
         createWindow(stage, viewAdd);
-    }
+    }*/
 
     private void createWindow(Stage stage, View viewAdd) {
         Scene scene = new Scene(viewAdd, 400, 400);
@@ -97,7 +95,7 @@ public class DishImage extends VBox {
         stage.show();
     }
 
-    private void deleteItem() {
+    /*private void deleteItem() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Eliminar");
         alert.setContentText("¿Desea eliminar " + (dish.isDish() ? "este plato de Comida" : "esta bebida"));
@@ -114,5 +112,5 @@ public class DishImage extends VBox {
                 tableOrders.getItems().remove(dish);
             }
         });
-    }
+    }*/
 }

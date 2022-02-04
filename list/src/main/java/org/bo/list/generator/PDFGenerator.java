@@ -7,7 +7,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.printing.PDFPageable;
-import org.bo.list.menu.Menu;
+import org.bo.list.Item.ItemDTO;
 import org.vandeseer.easytable.TableDrawer;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
 import org.vandeseer.easytable.structure.Row;
@@ -22,27 +22,48 @@ import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class PDFGenerator {
 
-    private Menu menu;
-    private PDPageContentStream contentStream;
-    private PDPage page;
-    private PDDocument document;
-    private float height;
+    protected Map<ItemDTO, Integer> order;
+    protected PDPageContentStream contentStream;
+    protected PDPage page;
+    protected PDDocument document;
+    protected float height;
+    protected double totalPrice;
+    protected float total_height;
 
-    public PDFGenerator(Menu menu) throws IOException {
-        this.menu = menu;
+    public PDFGenerator(Map<ItemDTO, Integer> order) throws IOException {
+        this.order = order;
+        this.totalPrice = 0;
+
+        this.document = new PDDocument();
+        this.page = new PDPage(PDRectangle.A4);
+        this.document.addPage(page);
+        this.contentStream = new PDPageContentStream(document, page);
     }
 
-    public void fillHeader() throws IOException, PrinterException {
-        document = new PDDocument();
-        page = new PDPage(PDRectangle.A4);
-        document.addPage(page);
+    public void createPDFKitchen() throws IOException, PrinterException {
+        createItems();
+        fillItems();
+        createTotalPrice();
+        closeContentStream();
+//        printPDF();
+    }
 
-        contentStream = new PDPageContentStream(document, page);
+    protected void printPDF() throws PrinterException {
+        PrinterJob printerJob = PrinterJob.getPrinterJob();
+        if (printerJob.printDialog()) {
+            printerJob.setPageable(new PDFPageable(document));
+            PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+            printerJob.setPrintService(service);
+            printerJob.print();
+        }
+    }
 
+    protected void createItems() throws IOException {
         height = page.getMediaBox().getHeight();
         contentStream.beginText();
         contentStream.setFont(PDType1Font.HELVETICA, 9);
@@ -84,8 +105,6 @@ public class PDFGenerator {
                         .build())
                 .build();
 
-        var finalTotal = fillItems();
-
         TableDrawer tableDrawer = TableDrawer.builder()
                 .contentStream(contentStream)
                 .startX(2)
@@ -93,37 +112,16 @@ public class PDFGenerator {
                 .table(myTable)
                 .build();
         tableDrawer.draw();
-
-        float total_height = height - 75 - (20 * menu.getOrderDishes().keySet().size());
-
-        putItemPdf(140, total_height, "Total: ", PDType1Font.HELVETICA_BOLD);
-        putItemPdf(170, total_height, finalTotal + "", PDType1Font.HELVETICA);
-
-        contentStream.close();
-        document.save("src/main/java/org/bo/app/pdf/" + LocalDate.now() + ".pdf");
-        printPDF();
     }
 
-    private void printPDF() throws PrinterException {
-         PrinterJob printerJob = PrinterJob.getPrinterJob();
-        if(printerJob.printDialog()) {
-            printerJob.setPageable(new PDFPageable(document));
-            PrintService service = PrintServiceLookup.lookupDefaultPrintService();
-            printerJob.setPrintService(service);
-            printerJob.print();
-        }
-    }
-
-
-    private double fillItems() {
+    protected void fillItems() {
         AtomicReference<Double> finaltotal = new AtomicReference<>((double) 0);
         var tableBuilder = Table.builder()
                 .addColumnsOfWidth(95, 35, 35, 35)
                 .padding(5)
                 .font(PDType1Font.HELVETICA)
                 .borderColor(Color.WHITE);
-        var orders = menu.getOrderDishes();
-        orders.forEach((itemDTO, quantity) -> {
+        order.forEach((itemDTO, quantity) -> {
             double total = quantity * itemDTO.getPrice();
             finaltotal.set(finaltotal.get() + total);
             tableBuilder.addRow(Row.builder().fontSize(9)
@@ -146,10 +144,17 @@ public class PDFGenerator {
                 .table(myTable)
                 .build();
         tableDrawer.draw();
-        return finaltotal.get();
+        this.totalPrice = finaltotal.get();
     }
 
-    private void putItemPdf(float posX, float posY, String texto, PDFont font) throws IOException {
+    protected void createTotalPrice() throws IOException {
+        total_height = height - 75 - (20 * order.keySet().size());
+
+        putItemPdf(140, total_height, "Total: ", PDType1Font.HELVETICA_BOLD);
+        putItemPdf(170, total_height, totalPrice + "", PDType1Font.HELVETICA);
+    }
+
+    protected void putItemPdf(float posX, float posY, String texto, PDFont font) throws IOException {
         contentStream.beginText();
         contentStream.newLineAtOffset(posX, posY);
         contentStream.setFont(font, 9);
@@ -157,4 +162,8 @@ public class PDFGenerator {
         contentStream.endText();
     }
 
+    protected void closeContentStream() throws IOException {
+        contentStream.close();
+        document.save("src/main/java/org/bo/app/pdf/" + LocalDate.now() + ".pdf");
+    }
 }

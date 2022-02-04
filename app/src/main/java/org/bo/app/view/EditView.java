@@ -29,8 +29,8 @@ public class EditView extends View {
 
     private String oldPath;
 
-    public EditView(Stage stage, ItemDTO dish, Menu menu, GridPane menuView) {
-        super(stage, dish, menu, menuView);
+    public EditView(Stage stage, ItemDTO dish) {
+        super(stage, dish);
 
         this.oldPath = "";
 
@@ -128,7 +128,6 @@ public class EditView extends View {
         }
 
         menu.update(item);
-        ((MenuView) menuView).refresh();
         stage.close();
     }
 

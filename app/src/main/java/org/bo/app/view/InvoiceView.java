@@ -12,17 +12,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.bo.list.Item.ItemDTO;
 import org.bo.list.Order;
+import org.bo.list.generator.PDFGeneratorInvoice;
 import org.bo.list.menu.Menu;
 import org.bo.list.waiter.WaiterDTO;
 import org.bo.list.waiter.WaiterManagement;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class InvoiceView extends VBox {
 
@@ -36,13 +37,14 @@ public class InvoiceView extends VBox {
     private ComboBox<String> waiters;
     private ImageView waiterPhoto;
 
-    private Menu menu;
+    private Map<ItemDTO, Integer> order;
     private Stage stage;
     private WaiterManagement waiterManagement;
     private List<WaiterDTO> listOfWaiters;
+    private double totalPrice;
 
-    public InvoiceView(Menu menu, Stage stage) throws SQLException {
-        this.menu = menu;
+    public InvoiceView(Map<ItemDTO, Integer> order, Stage stage) throws SQLException {
+        this.order = order;
         this.stage = stage;
         this.waiterManagement = new WaiterManagement();
         this.listOfWaiters = waiterManagement.selectWaiters();
@@ -54,7 +56,7 @@ public class InvoiceView extends VBox {
         this.tableAndOrderNumber = new Label("Mesa: 12\t\t" + "Nro: 25");
 
         this.tableOrders = generateTable();
-        double totalPrice = addDishes();
+        totalPrice = addDishes();
 
         this.labelCash = new Label("Cantidad recibida: ");
         this.labelChange = new Label("Cambio: ");
@@ -112,6 +114,13 @@ public class InvoiceView extends VBox {
                 , hTotalPrice, hCash, hChange, hWaiter, buttons);
 
         this.cancel.setOnAction(event -> stage.close());
+        this.accept.setOnAction(event -> {
+            try {
+                generateInvoice();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private TableView<Order> generateTable() {
@@ -145,7 +154,7 @@ public class InvoiceView extends VBox {
 
     private double addDishes() {
         List<Order> orders = new ArrayList<>();
-        this.menu.getOrderDishes().forEach((itemDTO, quantity) -> {
+        order.forEach((itemDTO, quantity) -> {
             double total = itemDTO.getPrice() * quantity;
             Order order = new Order(itemDTO.getName(), quantity, itemDTO.getPrice(), total);
             orders.add(order);
@@ -169,6 +178,18 @@ public class InvoiceView extends VBox {
                 this.waiterPhoto.setImage(image);
             }
         });
+    }
+
+    private void generateInvoice() throws IOException {
+        Map<String, String> requirements = new HashMap<>();
+        requirements.put("waiter", waiters.getValue());
+        requirements.put("cash", textFieldCash.getText());
+        requirements.put("change", textFieldChange.getText());
+        requirements.put("totalPrice", totalPrice + "");
+
+        PDFGeneratorInvoice pdfGeneratorInvoice = new PDFGeneratorInvoice(order, requirements);
+        pdfGeneratorInvoice.generateInvoice();
+        stage.close();
     }
 
 }
