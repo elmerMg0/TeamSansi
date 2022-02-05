@@ -9,7 +9,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.bo.app.view.ReadView;
+import org.bo.app.view.View;
+import org.bo.app.view.waiter.MenuWaiterView;
 import org.bo.list.Item.ItemDTO;
+import org.bo.list.waiter.WaiterManagement;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,9 +30,11 @@ public class ViewTables extends VBox {
     private boolean isLogIn;
 
     private List<ItemDTO> dishes;
+    private WaiterManagement waiterManagement;
 
     public ViewTables(List<ItemDTO> dishes) throws SQLException, IOException {
         this.dishes = dishes;
+        this.waiterManagement = new WaiterManagement();
 
         tables = new GridPane();
         buttons = new HBox();
@@ -45,6 +51,26 @@ public class ViewTables extends VBox {
                 createPopup();
             }
         });
+
+        btnEditWaiters.setOnAction(event -> {
+            try {
+                createWindowMenuWaiterView();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void createWindowMenuWaiterView() throws SQLException {
+        Stage stage = new Stage();
+        VBox menuWaiter = new MenuWaiterView(waiterManagement);
+        Scene scene = new Scene(menuWaiter, 950, 500);
+        stage.setX(500);
+        stage.setY(220);
+
+        stage.setScene(scene);
+        stage.setTitle("Meseros");
+        stage.show();
     }
 
     private void createPopup() {
