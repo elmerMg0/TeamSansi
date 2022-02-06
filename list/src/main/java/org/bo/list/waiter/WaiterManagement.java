@@ -21,4 +21,16 @@ public class WaiterManagement {
     public List<WaiterDTO> selectWaiters() throws SQLException {
         return waiterDao.select();
     }
+
+    public void addWaiter(WaiterDTO waiterDTO) throws SQLException {
+        waiterDao.insert(waiterDTO);
+    }
+
+    public void updateWaiter(WaiterDTO waiterDTO) throws SQLException {
+        waiterDao.update(waiterDTO);
+    }
+
+    public void deleteWaiter(WaiterDTO waiterDTO) throws SQLException {
+        waiterDao.delete(waiterDTO);
+    }
 }

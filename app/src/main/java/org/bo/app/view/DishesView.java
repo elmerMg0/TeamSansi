@@ -31,6 +31,7 @@ public class DishesView extends VBox {
         HBox buttons = new Buttons((OrderDetail) orderDetail);
 
         this.getChildren().addAll(frame, buttons);
+        this.setStyle("-fx-background-color:Gris");
     }
 
 }
