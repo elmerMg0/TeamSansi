@@ -19,6 +19,7 @@ import org.bo.list.menu.Menu;
 import org.bo.list.waiter.WaiterDTO;
 import org.bo.list.waiter.WaiterManagement;
 
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -48,7 +49,7 @@ public class InvoiceView extends VBox {
         this.stage = stage;
         this.waiterManagement = new WaiterManagement();
         this.listOfWaiters = waiterManagement.selectWaiters();
-
+        this.setStyle("-fx-background-color:Gris ");
 
         this.title = new Label("Dima's Restaurant");
         this.placeAndDate = new Label("Cochabamba - Bolivia\t\t" + "Fecha: " + LocalDate.now());
@@ -80,10 +81,13 @@ public class InvoiceView extends VBox {
         this.tableAndOrderNumber.setPadding(new Insets(2, 2, 2, 2));
 
         HBox hCash = generateHBox(new Insets(5, 0, 5, 0), labelCash, textFieldCash);
+        hCash.setAlignment(Pos.TOP_RIGHT);
         HBox hChange = generateHBox(new Insets(5, 0, 5, 0), labelChange, textFieldChange);
+        hChange.setAlignment(Pos.TOP_RIGHT);
         HBox buttons = generateHBox(new Insets(5, 5, 5, 5), accept, cancel);
 
         String path = new File(DEFAULT_IMAGE).toURI().toString();
+
         Image image = new Image(path);
         this.waiterPhoto = new ImageView(image);
         this.waiterPhoto.setFitWidth(40);
@@ -118,6 +122,8 @@ public class InvoiceView extends VBox {
             try {
                 generateInvoice();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (PrinterException e) {
                 e.printStackTrace();
             }
         });
@@ -172,7 +178,7 @@ public class InvoiceView extends VBox {
                 .filter(waiterDTO -> waiterDTO.getName().equals(waiterName)).findFirst();
 
         waiter.ifPresent(waiterDTO -> {
-            if (waiterDTO.getPath().contains("*.png") || waiterDTO.getPath().contains("*.jpg")) {
+            if (waiterDTO.getPath().contains(".jpg") || waiterDTO.getPath().contains(".png")) {
                 String path = new File(waiterDTO.getPath()).toURI().toString();
                 Image image = new Image(path);
                 this.waiterPhoto.setImage(image);
@@ -180,7 +186,7 @@ public class InvoiceView extends VBox {
         });
     }
 
-    private void generateInvoice() throws IOException {
+    private void generateInvoice() throws IOException, PrinterException {
         Map<String, String> requirements = new HashMap<>();
         requirements.put("waiter", waiters.getValue());
         requirements.put("cash", textFieldCash.getText());

@@ -30,7 +30,7 @@ public class WaiterImage extends VBox {
 
         Label name = new Label(waiterDTO.getName());
 
-        String pathImage = waiterDTO.getPath().contains("jpg") ? waiterDTO.getPath() : DEFAULT_IMAGE;
+        String pathImage = waiterDTO.getPath().contains(".jpg") ? waiterDTO.getPath() : DEFAULT_IMAGE;
         String path = new File(pathImage).toURI().toString();
         Image image = new Image(path);
         ImageView imageView = new ImageView(image);

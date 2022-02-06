@@ -3,22 +3,20 @@ package org.bo.app;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.bo.app.view.EditView;
 import org.bo.app.view.ReadView;
 import org.bo.app.view.View;
 import org.bo.list.Item.ItemDTO;
-import org.bo.list.menu.Menu;
-
 import java.io.File;
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.Optional;
+import javafx.geometry.Pos;
 
 public class DishImage extends VBox {
 
@@ -31,8 +29,9 @@ public class DishImage extends VBox {
     public DishImage(ItemDTO dish, VBox orderDetail) {
         this.dish = dish;
         this.orderDetail = orderDetail;
-
         Label name = new Label(dish.getName());
+        name.setFont(new Font("Arial",20));
+        name.setStyle("-fx-font-weight: bold");
         String path = new File(dish.getPathImage()).toURI().toString();
         Image image = new Image(path);
         ImageView imageView = new ImageView(image);
@@ -55,6 +54,7 @@ public class DishImage extends VBox {
         imageView.setFitWidth(280);
         imageView.setCursor(Cursor.HAND);
         this.getChildren().addAll(name, imageView);
+        this.setAlignment(Pos.CENTER);
         this.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 contextMenu.hide();

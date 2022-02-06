@@ -41,6 +41,7 @@ public class ViewTables extends VBox {
         putButtons();
         fillTables();
         this.getChildren().addAll(buttons, tables);
+        this.setStyle("-fx-background-color:Gris ");
         btnInitialSesion.setOnMouseClicked(event -> {
             if (isLogIn) {
                 btnEditItems.setVisible(false);
@@ -75,7 +76,7 @@ public class ViewTables extends VBox {
 
     private void createPopup() {
         String user = "user";
-        String passwordEncrypted = Base64.getEncoder().encodeToString("contraseña".getBytes());
+        String passwordEncrypted = Base64.getEncoder().encodeToString("contrasenia".getBytes());
 
         Stage stage = new Stage();
         VBox pop_up = new VBox();

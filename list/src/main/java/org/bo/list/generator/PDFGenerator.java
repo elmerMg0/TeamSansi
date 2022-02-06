@@ -16,6 +16,7 @@ import org.vandeseer.easytable.structure.cell.TextCell;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import javax.swing.plaf.basic.BasicGraphicsUtils;
 import java.awt.*;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -49,8 +50,8 @@ public class PDFGenerator {
         createItems();
         fillItems();
         createTotalPrice();
-        closeContentStream();
-//        printPDF();
+        closeContentStream("order");
+        printPDF();
     }
 
     protected void printPDF() throws PrinterException {
@@ -140,7 +141,7 @@ public class PDFGenerator {
         TableDrawer tableDrawer = TableDrawer.builder()
                 .contentStream(contentStream)
                 .startX(2)
-                .startY(height - 75)
+                .startY(height - 80)
                 .table(myTable)
                 .build();
         tableDrawer.draw();
@@ -148,10 +149,20 @@ public class PDFGenerator {
     }
 
     protected void createTotalPrice() throws IOException {
-        total_height = height - 75 - (20 * order.keySet().size());
+        PDFont font= PDType1Font.HELVETICA;
+        total_height = height - 80 - (20 * order.keySet().size());
+        int size = 9;
+        float paddingRight = 0;
+        float pagewidth = page.getMediaBox().getWidth();
 
-        putItemPdf(140, total_height, "Total: ", PDType1Font.HELVETICA_BOLD);
-        putItemPdf(170, total_height, totalPrice + "", PDType1Font.HELVETICA);
+        float text_width = (font.getStringWidth(String.valueOf(totalPrice)) / 1000.0f) * size;
+        float x = pagewidth - ((paddingRight * 2) + text_width);
+        putItemPdf(x - 398, total_height, String.valueOf(totalPrice), PDType1Font.HELVETICA);
+
+        String texto = "total:";
+        float text_width2 = (font.getStringWidth(texto) / 1000.0f) * size;
+        float x2 = pagewidth - ((paddingRight * 2) + text_width2);
+        putItemPdf(x2-435, total_height, texto, PDType1Font.HELVETICA_BOLD);
     }
 
     protected void putItemPdf(float posX, float posY, String texto, PDFont font) throws IOException {
@@ -162,8 +173,8 @@ public class PDFGenerator {
         contentStream.endText();
     }
 
-    protected void closeContentStream() throws IOException {
+    protected void closeContentStream(String tipe) throws IOException {
         contentStream.close();
-        document.save("src/main/java/org/bo/app/pdf/" + LocalDate.now() + ".pdf");
+        document.save("src/main/java/org/bo/app/pdf/" + LocalDate.now() + tipe+ ".pdf");
     }
 }
